@@ -1,0 +1,161 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <body>
+
+        <ui:composition template="./Template.xhtml">
+
+            <ui:define name="top">
+                <h2 align="center">PRODUCTOS</h2>
+            </ui:define>
+
+            <ui:define name="content">
+
+                <h:form id="frmlista">
+                    <p:growl id="msj" autoUpdate="false" showDetail="true" showSummary="false" />
+                    <p:dataTable id="tbproducto" var="producto" value="#{productoBean.listProductos}" widgetVar="wgtable"
+                                 filteredValue="#{productoBean.filtrolistProductos}" 
+                                 style="font-family: verdana; font-size: 12px" rowKey="#{producto.idproductos}"
+                                 selectionMode="single" selection="#{productoBean.producto}" 
+                                 paginator="true"  paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+                                 rowsPerPageTemplate="5,10,15,20,30" scrollable="true"  scrollHeight="250"
+                                 emptyMessage="No se Encontraron Productos...">
+                        <f:facet name="header">
+                            <h2 align="center">LISTADO GENERAL DE PRODUCTOS E INSUMOS</h2>
+                            <p:outputPanel style="alignment-adjust: after-edge; margin-left: 10px">
+
+                                <h:outputText value="Buscar Por: " />
+                                <p:inputText  id="globalFilter" onkeyup="PF('wgtable').filter()"
+                                              style="width:300px; margin-left: 10px" 
+                                              placeholder="Producto o Categoria"/>
+                            </p:outputPanel>
+                        </f:facet>
+                        
+                        <p:ajax event="rowSelect" listener="#{productoBean.onRowSelect}" oncomplete="PF('wgdlproducto').show()" 
+                                update="frmlista:msj,:frmproducto" />
+        
+                        <p:column headerText="Codigo de Barras">
+                            <h:outputText value="#{producto.codigobarras}" />
+                        </p:column>
+                        <p:column filterBy="#{producto.descripcion}" headerText="Descripcion" width="350">
+                            <h:outputText value="#{producto.descripcion}" />
+                        </p:column>
+                        <p:column filterBy="#{producto.categoria.descripcion}" headerText="Categoria">
+                            <h:outputText value="#{producto.categoria.descripcion}" />
+                        </p:column>
+                        <p:column headerText="Stock Actual">
+                            <h:outputText value="#{producto.stockActual}" />
+                        </p:column>
+                        <p:column headerText="$ Costo" style="text-align: right">
+                            <h:outputText value="#{producto.costo}" />
+                        </p:column>
+                        <p:column headerText="$ Precio de Venta" style="text-align: right">
+                            <h:outputText value="#{producto.precioVenta}" />
+                        </p:column>
+                    </p:dataTable>
+
+                    <p:commandButton value="Add" icon="ui-icon-plus" oncomplete="PF('wgdlproducto').show()"/>
+                </h:form>
+                <p:dialog  header="DATOS DEL PRODUCTO" id="dlgproducto" widgetVar="wgdlproducto"  >
+                    <h:form id="frmproducto">
+
+                        <p:menubar>
+                            <p:submenu label="Opciones" icon="ui-icon-wrench">
+                                <p:menuitem value="Nuevo" icon="ui-icon-check"/>
+                                <p:menuitem  update="frmlista:msj,frmlista:tbproducto" value="Guardar"
+                                             actionListener="#{productoBean.save(event)}" icon="ui-icon-disk"/>
+                                <p:menuitem value="Modificar" actionListener="#{productoBean.update(event)}" icon="ui-icon-pencil"
+                                            update=":frmlista" process="@this,frmproducto"/>
+                                <p:menuitem value="Eliminar"  icon="ui-icon-trash" />
+                                <p:separator />
+                                <p:menuitem value="Salir"  icon="ui-icon-arrowrefresh-1-w" oncomplete ="PF('wgdlproducto').hide()"/>
+                            </p:submenu>
+
+                            <p:submenu label="Informes" icon="ui-icon-folder-open">
+                                <p:menuitem value="Listado de Existencias" icon="ui-icon-print" url="#" />
+                                <p:separator />
+                                <p:menuitem value="Listado de Precios" icon="ui-icon-print" url="#" />
+                            </p:submenu>
+                        </p:menubar>
+                        <p:panel header="Datos Generales">
+                            <h:panelGrid style="margin-left: 150px" columns="2" id="pdataproducto">
+                                <h:panelGrid columns="2">
+                                    <h:outputLabel value="ID. Producto: " for="idproducto"/>
+                                    <p:inputText id="idproducto" value="#{productoBean.producto.idproductos}" 
+                                                 disabled="false" style="text-align: right"/>
+                                    <h:outputLabel value="Codigo de Barras" for="codigobarras"/>
+                                    <p:inputText id="codigobarras" value="#{productoBean.producto.codigobarras}"/>
+                                    <h:outputLabel value="Descripcion" for="descripcion" />
+                                    <p:inputText id="descripcion" value="#{productoBean.producto.descripcion}" size="50"/>
+                                    <p:outputLabel value="Categoria" for="categoria" />
+                                    <p:selectOneMenu id="categoria" value="#{productoBean.producto.categoria.idcategorias}" required="true" 
+                                                     requiredMessage="Selecciona una Categoria por favor. Gracias!"
+                                                     converter="omnifaces.SelectItemsConverter" style="width: 180px">
+                                        <f:selectItem itemLabel="Seleccione"  itemValue="#{categoriaItem.idcategorias}"/>
+                                        <f:selectItems value="#{productoBean.listcategoria}"
+                                                       var="categoriaItem"
+                                                       itemValue="#{categoriaItem.idcategorias}"
+                                                       itemLabel="#{categoriaItem.descripcion}"/>
+                                    </p:selectOneMenu>
+                                </h:panelGrid>
+                            </h:panelGrid>
+                        </p:panel>
+                        <h:panelGrid columns="3" style="margin-left: 50px">
+                            <p:panel header="Stocks">
+                                <h:panelGrid columns="2">
+                                    <h:outputLabel value="Stock Actual" for="stockactual"/>
+                                    <p:inputText id="stockactual" value="#{productoBean.producto.stockActual}" 
+                                                 style="text-align: right" size="10"/>
+                                    <h:outputLabel value="Strock Aviso" for="stockaviso"/>
+                                    <p:inputText id="stockaviso" value="#{productoBean.producto.stockAviso}" 
+                                                 style="text-align: right" size="10" />                                
+                                    <h:outputLabel value="Strock Minimo" for="stockminimo"/>
+                                    <p:inputText id="stockminimo" value="#{productoBean.producto.stockMinimo}" 
+                                                 style="text-align: right" size="10"/>
+                                </h:panelGrid>
+                            </p:panel>
+                            <p:panel header="Costes Relacionados">
+                                <h:panelGrid columns="2">
+                                    <h:outputLabel value="$ Costo" for="costo"/>
+                                    <p:inputText id="costo" value="#{productoBean.producto.costo}"
+                                                 style="text-align: right" size="15"/>
+                                    <h:outputLabel value="Precio de Venta" for="precioventa"/>
+                                    <p:inputText id="precioventa" value="#{productoBean.producto.precioVenta}" 
+                                                 style="text-align: right" size="15">
+                                        <p:ajax event="keyup" update="utilidad" process="@this,costo"/>
+                                    </p:inputText>                                
+                                    <h:outputLabel value="$ Utilidad" for="utilidad"/>
+                                    <p:inputText id="utilidad" value="#{productoBean.cp.utilidad(productoBean.producto)}"
+                                                 style="text-align: right" size="15" disabled="true"/>
+                                </h:panelGrid>
+                            </p:panel>
+                            <p:panel header="Dimenciones y Peso">
+                                <h:panelGrid columns="2">
+                                    <h:outputLabel value="Ancho" for="ancho"/>
+                                    <p:inputText id="ancho" value="#{productoBean.producto.ancho}"
+                                                 style="text-align: right" size="15"/>
+                                    <h:outputLabel value="Alto" for="alto"/>
+                                    <p:inputText id="alto" value="#{productoBean.producto.alto}" 
+                                                 style="text-align: right" size="15"/>                                
+                                    <h:outputLabel value="Espesor" for="espesor"/>
+                                    <p:inputText id="espesor" value="#{productoBean.producto.espesor}"
+                                                 style="text-align: right" size="15"/>
+                                    <h:outputLabel value="Peso en KG" for="peso"/>
+                                    <p:inputText id="peso" value="#{productoBean.producto.peso}"
+                                                 style="text-align: right" size="15"/>
+                                </h:panelGrid>
+                            </p:panel>
+                        </h:panelGrid>
+                    </h:form>
+                </p:dialog>
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>
