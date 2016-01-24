@@ -124,4 +124,8 @@ public class ProductoBean implements Serializable {
         return cp;
     }
 
+    public void nuevo(ActionEvent ae){
+        producto = new Producto();
+        producto.setCodigobarras(gc.getCodigoAleatorioNumerico());
+    }
 }

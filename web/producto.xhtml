@@ -59,7 +59,9 @@
                         </p:column>
                     </p:dataTable>
 
-                    <p:commandButton value="Add" icon="ui-icon-plus" oncomplete="PF('wgdlproducto').show()"/>
+                    <p:commandButton value="Add" actionListener="#{productoBean.nuevo(ae)}"
+                                     icon="ui-icon-plus" oncomplete="PF('wgdlproducto').show()"
+                                     update=":frmproducto"/>
                 </h:form>
                 <p:dialog  header="DATOS DEL PRODUCTO" id="dlgproducto" widgetVar="wgdlproducto"  >
                     <h:form id="frmproducto">
@@ -87,7 +89,7 @@
                                 <h:panelGrid columns="2">
                                     <h:outputLabel value="ID. Producto: " for="idproducto"/>
                                     <p:inputText id="idproducto" value="#{productoBean.producto.idproductos}" 
-                                                 disabled="false" style="text-align: right"/>
+                                                 disabled="false" style="text-align: right" size="5"/> 
                                     <h:outputLabel value="Codigo de Barras" for="codigobarras"/>
                                     <p:inputText id="codigobarras" value="#{productoBean.producto.codigobarras}"/>
                                     <h:outputLabel value="Descripcion" for="descripcion" />
