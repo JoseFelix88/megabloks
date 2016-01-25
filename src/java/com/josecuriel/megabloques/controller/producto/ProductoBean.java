@@ -45,7 +45,7 @@ public class ProductoBean implements Serializable {
     @PostConstruct
     public void init() {
         producto = new Producto();
-        producto.setCodigobarras(gc.getCodigoAleatorioNumerico());
+//        producto.setCodigobarras(gc.getCodigoAleatorioNumerico());
         productoDAO = new ProductoDAO();
         listcategoria = cdao.readAll();
         cargarListaproducto();
