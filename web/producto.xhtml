@@ -39,6 +39,10 @@
                         <p:ajax event="rowSelect" listener="#{productoBean.onRowSelect}" oncomplete="PF('wgdlproducto').show()" 
                                 update="frmlista:msj,:frmproducto" />
 
+                         <p:column headerText="Imagen">
+                             <p:graphicImage value="#{FacesContext.getCurrentInstance().getExternalContext()}/imgproductos/#{producto.codigobarras}.png" 
+                                             alt="imagen" cache="false" width="90" height="90"/>
+                        </p:column>
                         <p:column headerText="Codigo de Barras">
                             <h:outputText value="#{producto.codigobarras}" />
                         </p:column>
@@ -61,13 +65,17 @@
                                 <f:convertNumber type="currency" currencySymbol="$ " maxFractionDigits="0" />
                             </h:outputText>
                         </p:column>
+                         <p:column headerText="">
+                            <p:commandButton value="Añadir Imagen" onclick="PF('dialogoimgproducto').show()"/>
+                        </p:column>
                     </p:dataTable>
 
                     <p:commandButton value="Add" actionListener="#{productoBean.nuevo(ae)}"
                                      icon="ui-icon-plus" oncomplete="PF('wgdlproducto').show()"
                                      update=":frmproducto"/>
                 </h:form>
-                <p:dialog  header="DATOS DEL PRODUCTO" id="dlgproducto" widgetVar="wgdlproducto" minimizable="true" >
+                <p:dialog  header="DATOS DEL PRODUCTO" id="dlgproducto" widgetVar="wgdlproducto" 
+                           minimizable="true" >
                     <h:form id="frmproducto">
 
                         <p:menubar>
@@ -169,6 +177,14 @@
                                 </h:panelGrid>
                             </p:panel>
                         </h:panelGrid>
+                    </h:form>
+                </p:dialog>
+                <p:dialog header="Imagen del Producto" widgetVar="dialogoimgproducto" modal="true">
+                    <h:form id="frmimgproducto" enctype="multipart/form-data">
+                        <h:inputHidden value="#{productoBean.producto.idproductos}"/>
+                        <p:fileUpload id="txtAvatar" mode="simple" value="#{productoBean.imgproducto}"/>
+                        <p:commandButton value="Subir" ajax="false" icon="ui-icon-circle-arrow-n"
+                                         actionListener="#{productoBean.agregarimgproducto()}"/>
                     </h:form>
                 </p:dialog>
             </ui:define>

@@ -6,6 +6,11 @@ import com.josecuriel.megabloques.model.producto.ProductoDAO;
 import com.josecuriel.megabloques.model.producto.categoria.Categoria;
 import com.josecuriel.megabloques.model.producto.categoria.CategoriaDAO;
 import com.josecuriel.megabloques.model.util.Generador_de_Codigos;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +20,9 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.view.ViewScoped;
+import javax.servlet.ServletContext;
 import org.primefaces.event.SelectEvent;
+import org.primefaces.model.UploadedFile;
 
 @ManagedBean
 @ViewScoped
@@ -29,6 +36,8 @@ public class ProductoBean implements Serializable {
     private Producto producto;
     private List<Producto> listProductos;
     private List<Producto> filtrolistProductos;
+
+    private UploadedFile imgproducto;
 
     private final CalculosProducto cp = new CalculosProducto();
     Generador_de_Codigos gc = new Generador_de_Codigos();
@@ -124,8 +133,66 @@ public class ProductoBean implements Serializable {
         return cp;
     }
 
-    public void nuevo(ActionEvent ae){
+    public void nuevo(ActionEvent ae) {
         producto = new Producto();
         producto.setCodigobarras(gc.getCodigoAleatorioNumerico());
+    }
+
+    /*EL SIGUIENTE METODO Y TODO EL FUNCIONAMIENTO DE ESTA PARTE DEL PROYECTO
+    REFERENTE A LA ENTRADA HACIDO TOMADO DE LA ENTRADA DEL BLOG:
+    http://todoenjava.blogspot.com.co/2014/06/jsf-appagenda-parte-24-subir-imagen-al.html*/
+    public void agregarimgproducto() throws IOException {
+        InputStream inputStream = null;
+        OutputStream outputStream = null;
+
+        try {
+            if (this.imgproducto.getSize() <= 0) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error:", "Ud. debe seleccionar un archivo de imagen \".png\""));
+                return;
+            }
+
+            if (!this.imgproducto.getFileName().endsWith(".png")) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error:", "El archivo debe ser con extensión \".png\""));
+                return;
+            }
+
+            if (this.imgproducto.getSize() > 2097152) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error:", "El archivo no puede ser más de 2mb"));
+                return;
+            }
+
+            ServletContext servletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
+            String folderimgproductos = (String) servletContext.getRealPath("/imgproductos");
+
+            outputStream = new FileOutputStream(new File(folderimgproductos + "/" + this.producto.getCodigobarras() + ".png"));
+            inputStream = this.imgproducto.getInputstream();
+
+            int read = 0;
+            byte[] bytes = new byte[1024];
+
+            while ((read = inputStream.read(bytes)) != -1) {
+                outputStream.write(bytes, 0, read);
+            }
+
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Correcto:", "Imagen del Producto Subida correctamente"));
+        } catch (Exception ex) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_FATAL, "Error fatal:", "Por favor contacte con su administrador " + ex.getMessage()));
+        } finally {
+            if (inputStream != null) {
+                inputStream.close();
+            }
+
+            if (outputStream != null) {
+                outputStream.close();
+            }
+        }
+    }
+
+    public UploadedFile getImgproducto() {
+        return imgproducto;
+    }
+
+    public void setImgproducto(UploadedFile imgproducto) {
+        this.imgproducto = imgproducto;
     }
 }
