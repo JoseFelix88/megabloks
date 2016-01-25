@@ -139,8 +139,8 @@ public class ProductoBean implements Serializable {
     }
 
     /*EL SIGUIENTE METODO Y TODO EL FUNCIONAMIENTO DE ESTA PARTE DEL PROYECTO
-    REFERENTE A LA ENTRADA HACIDO TOMADO DE LA ENTRADA DEL BLOG:
-    http://todoenjava.blogspot.com.co/2014/06/jsf-appagenda-parte-24-subir-imagen-al.html*/
+    --REFERENTE A LA CARGA DE UNA IMAGEN A UNA CARPETA DEL SERVIDOR HACIDO TOMADO DE LA ENTRADA DEL BLOG:
+    --http://todoenjava.blogspot.com.co/2014/06/jsf-appagenda-parte-24-subir-imagen-al.html*/
     public void agregarimgproducto() throws IOException {
         InputStream inputStream = null;
         OutputStream outputStream = null;

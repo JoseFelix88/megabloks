@@ -21,9 +21,10 @@ public class pruebaBean {
         ProductoDAO dAO = new ProductoDAO();
 
         List<Producto>l = dAO.readAll();
-        l.stream().forEach((producto) -> {
-            System.out.println(producto.getDescripcion()+" - "+producto.getIdproductos());
-        }); 
+        for (Producto l1 : l) {
+            System.out.println(l1.getDescripcion()+" - "+l1.getIdproductos());
+            
+        }
          
         
         /* List<Categoria> rs = aO.readAll();

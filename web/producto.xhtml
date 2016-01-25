@@ -27,6 +27,7 @@
                                  emptyMessage="No se Encontraron Productos...">
                         <f:facet name="header">
                             <h2 align="center">LISTADO GENERAL DE PRODUCTOS E INSUMOS</h2>
+                           
                             <p:outputPanel style="alignment-adjust: after-edge; margin-left: 10px">
 
                                 <h:outputText value="Buscar Por: " />
@@ -39,9 +40,12 @@
                         <p:ajax event="rowSelect" listener="#{productoBean.onRowSelect}" oncomplete="PF('wgdlproducto').show()" 
                                 update="frmlista:msj,:frmproducto" />
 
-                         <p:column headerText="Imagen">
-                             <p:graphicImage value="#{FacesContext.getCurrentInstance().getExternalContext()}/imgproductos/#{producto.codigobarras}.png" 
-                                             alt="imagen" cache="false" width="90" height="90"/>
+                        <p:column width="10">
+                            <p:outputLabel value="#{facesContext.externalContext.requestPathInfo}"/>
+                        </p:column>
+                        <p:column headerText="Imagen" width="120">
+                            <p:graphicImage  value="#{facesContext.externalContext}/imgproductos/#{producto.codigobarras}.png"
+                                             width="90" height="90"/>
                         </p:column>
                         <p:column headerText="Codigo de Barras">
                             <h:outputText value="#{producto.codigobarras}" />
@@ -80,7 +84,7 @@
 
                         <p:menubar>
                             <p:submenu label="Opciones" icon="ui-icon-wrench">
-                                <p:menuitem value="Nuevo" actionListener="#{productoBean.nuevo(ae)}"
+                                <p:menuitem process="@this" value="Nuevo" actionListener="#{productoBean.nuevo(ae)}"
                                             icon="ui-icon-check" update=":frmproducto"/>
                                 <p:menuitem  update="frmlista:msj,frmlista:tbproducto" value="Guardar"
                                              actionListener="#{productoBean.save(event)}" icon="ui-icon-disk"/>
@@ -164,22 +168,22 @@
                                 <h:panelGrid columns="2">
                                     <h:outputLabel value="Ancho" for="ancho"/>
                                     <p:inputText id="ancho" value="#{productoBean.producto.ancho}"
-                                                 style="text-align: right" size="15"/>
+                                                 style="text-align: right" size="5"/>
                                     <h:outputLabel value="Alto" for="alto"/>
                                     <p:inputText id="alto" value="#{productoBean.producto.alto}" 
-                                                 style="text-align: right" size="15"/>                                
+                                                 style="text-align: right" size="5"/>                                
                                     <h:outputLabel value="Espesor" for="espesor"/>
                                     <p:inputText id="espesor" value="#{productoBean.producto.espesor}"
-                                                 style="text-align: right" size="15"/>
+                                                 style="text-align: right" size="5"/>
                                     <h:outputLabel value="Peso en KG" for="peso"/>
                                     <p:inputText id="peso" value="#{productoBean.producto.peso}"
-                                                 style="text-align: right" size="15"/>
+                                                 style="text-align: right" size="5"/>
                                 </h:panelGrid>
                             </p:panel>
                         </h:panelGrid>
                     </h:form>
                 </p:dialog>
-                <p:dialog header="Imagen del Producto" widgetVar="dialogoimgproducto" modal="true">
+                <p:dialog header="Subir Imagen del Producto" widgetVar="dialogoimgproducto" modal="true">
                     <h:form id="frmimgproducto" enctype="multipart/form-data">
                         <h:inputHidden value="#{productoBean.producto.idproductos}"/>
                         <p:fileUpload id="txtAvatar" mode="simple" value="#{productoBean.imgproducto}"/>

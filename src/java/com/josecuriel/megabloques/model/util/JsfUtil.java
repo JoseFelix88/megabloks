@@ -20,9 +20,10 @@ public class JsfUtil {
     }
 
     public static void addErrorMessages(List<String> messages) {
-        messages.stream().forEach((message) -> {
+        for (String message : messages) {
             addErrorMessage(message);
-        });
+        }
+        
     }
 
     public static void addErrorMessage(String msg) {
