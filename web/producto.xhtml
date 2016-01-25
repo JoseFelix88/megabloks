@@ -44,7 +44,7 @@
                             <p:outputLabel value="#{facesContext.externalContext.requestPathInfo}"/>
                         </p:column>
                         <p:column headerText="Imagen" width="120">
-                            <p:graphicImage  value="#{facesContext.externalContext}/imgproductos/#{producto.codigobarras}.png"
+                            <p:graphicImage  value="#{FacesContext.getCurrentInstance().getExternalContext()}/resources/imgproductos/#{producto.codigobarras}.png"
                                              width="90" height="90"/>
                         </p:column>
                         <p:column headerText="Codigo de Barras">

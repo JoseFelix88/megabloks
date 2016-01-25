@@ -13,12 +13,17 @@
 
             <ui:define name="content">
 
+              <!--  <p:imageSwitch effect="shuffle" style="margin-left: 150px">
+                    <ui:repeat value="#{imagesView.images}" var="image">
+                        <p:graphicImage value="#{FacesContext.getCurrentInstance().getExternalContext()}/resources/img/#{image}" styleClass="content" />
+                    </ui:repeat>
+                </p:imageSwitch>            -->
 
-                
-                <p:contentFlow value="#{imagesView.images}" var="image">
-                    <p:graphicImage name="/img/#{image}" styleClass="content" />
+
+              <p:contentFlow value="#{imagesView.images}" var="image">
+                    <p:graphicImage value="#{FacesContext.getCurrentInstance().getExternalContext()}/resources/img/#{image}" styleClass="content" />
                     <div class="caption">#{image}</div>
-                </p:contentFlow>
+              </p:contentFlow>
             </ui:define>
 
         </ui:composition>

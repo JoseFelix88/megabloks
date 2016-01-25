@@ -162,9 +162,9 @@ public class ProductoBean implements Serializable {
             }
 
             ServletContext servletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
-            String folderimgproductos = (String) servletContext.getRealPath("/imgproductos");
+            String folderimgproductos = (String) servletContext.getRealPath("/resources/imgproductos");
 
-            outputStream = new FileOutputStream(new File(folderimgproductos + "/" + this.producto.getCodigobarras() + ".png"));
+            outputStream = new FileOutputStream(new File(folderimgproductos + "/" + this.producto.getCodigobarras()+ ".png"));
             inputStream = this.imgproducto.getInputstream();
 
             int read = 0;
