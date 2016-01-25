@@ -29,7 +29,7 @@ public class ProductoDAO extends database implements CRUD<Producto> {
 
             ps = getConnection().prepareStatement(sql);
             ps.setString(1, c.getCodigobarras());
-            ps.setString(2, c.getDescripcion());
+            ps.setString(2, c.getDescripcion().toUpperCase());
             ps.setFloat(3, c.getStockActual());
             ps.setFloat(4, c.getStockMinimo());
             ps.setFloat(5, c.getStockAviso());
@@ -69,7 +69,7 @@ public class ProductoDAO extends database implements CRUD<Producto> {
 
             ps = getConnection().prepareStatement(sql);
             ps.setString(1, c.getCodigobarras());
-            ps.setString(2, c.getDescripcion());
+            ps.setString(2, c.getDescripcion().toUpperCase());
             ps.setFloat(3, c.getStockActual());
             ps.setFloat(4, c.getStockMinimo());
             ps.setFloat(5, c.getStockAviso());
@@ -191,9 +191,13 @@ public class ProductoDAO extends database implements CRUD<Producto> {
     public boolean CodigoProducto(String codigoenviado) {
 
         Object[][] rs = select("productos", "codigobarras", "codigobarras = '" + codigoenviado + "'");
+        if (rs.length <= 0 || !rs[0][0].equals(codigoenviado)) {
+            return true;
+        } else {
+            return false;
+        }
 
-        return !rs[0][0].equals(codigoenviado);
-
+        
     }
 
 }

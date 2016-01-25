@@ -35,10 +35,10 @@
                                               placeholder="Producto o Categoria"/>
                             </p:outputPanel>
                         </f:facet>
-                        
+
                         <p:ajax event="rowSelect" listener="#{productoBean.onRowSelect}" oncomplete="PF('wgdlproducto').show()" 
                                 update="frmlista:msj,:frmproducto" />
-        
+
                         <p:column headerText="Codigo de Barras">
                             <h:outputText value="#{producto.codigobarras}" />
                         </p:column>
@@ -52,10 +52,14 @@
                             <h:outputText value="#{producto.stockActual}" />
                         </p:column>
                         <p:column headerText="$ Costo" style="text-align: right">
-                            <h:outputText value="#{producto.costo}" />
+                            <h:outputText value="#{producto.costo}" >
+                                <f:convertNumber type="currency" currencySymbol="$ " maxFractionDigits="0" />
+                            </h:outputText>
                         </p:column>
                         <p:column headerText="$ Precio de Venta" style="text-align: right">
-                            <h:outputText value="#{producto.precioVenta}" />
+                            <h:outputText value="#{producto.precioVenta}" >
+                                <f:convertNumber type="currency" currencySymbol="$ " maxFractionDigits="0" />
+                            </h:outputText>
                         </p:column>
                     </p:dataTable>
 
@@ -63,12 +67,13 @@
                                      icon="ui-icon-plus" oncomplete="PF('wgdlproducto').show()"
                                      update=":frmproducto"/>
                 </h:form>
-                <p:dialog  header="DATOS DEL PRODUCTO" id="dlgproducto" widgetVar="wgdlproducto"  >
+                <p:dialog  header="DATOS DEL PRODUCTO" id="dlgproducto" widgetVar="wgdlproducto" minimizable="true" >
                     <h:form id="frmproducto">
 
                         <p:menubar>
                             <p:submenu label="Opciones" icon="ui-icon-wrench">
-                                <p:menuitem value="Nuevo" icon="ui-icon-check"/>
+                                <p:menuitem value="Nuevo" actionListener="#{productoBean.nuevo(ae)}"
+                                            icon="ui-icon-check" update=":frmproducto"/>
                                 <p:menuitem  update="frmlista:msj,frmlista:tbproducto" value="Guardar"
                                              actionListener="#{productoBean.save(event)}" icon="ui-icon-disk"/>
                                 <p:menuitem value="Modificar" actionListener="#{productoBean.update(event)}" icon="ui-icon-pencil"
@@ -93,7 +98,7 @@
                                     <h:outputLabel value="Codigo de Barras" for="codigobarras"/>
                                     <p:inputText id="codigobarras" value="#{productoBean.producto.codigobarras}"/>
                                     <h:outputLabel value="Descripcion" for="descripcion" />
-                                    <p:inputText id="descripcion" value="#{productoBean.producto.descripcion}" size="50"/>
+                                    <p:inputText id="descripcion" value="#{productoBean.producto.descripcion}" size="70"/>
                                     <p:outputLabel value="Categoria" for="categoria" />
                                     <p:selectOneMenu id="categoria" value="#{productoBean.producto.categoria.idcategorias}" required="true" 
                                                      requiredMessage="Selecciona una Categoria por favor. Gracias!"
@@ -112,28 +117,39 @@
                                 <h:panelGrid columns="2">
                                     <h:outputLabel value="Stock Actual" for="stockactual"/>
                                     <p:inputText id="stockactual" value="#{productoBean.producto.stockActual}" 
-                                                 style="text-align: right" size="10"/>
+                                                 style="text-align: right" size="10">
+                                        <f:convertNumber type="currency" currencySymbol="" maxFractionDigits="0" />
+                                    </p:inputText>
                                     <h:outputLabel value="Strock Aviso" for="stockaviso"/>
                                     <p:inputText id="stockaviso" value="#{productoBean.producto.stockAviso}" 
-                                                 style="text-align: right" size="10" />                                
+                                                 style="text-align: right" size="10" >
+                                        <f:convertNumber type="currency" currencySymbol="" maxFractionDigits="0" />
+                                    </p:inputText>                                
                                     <h:outputLabel value="Strock Minimo" for="stockminimo"/>
                                     <p:inputText id="stockminimo" value="#{productoBean.producto.stockMinimo}" 
-                                                 style="text-align: right" size="10"/>
+                                                 style="text-align: right" size="10">
+                                        <f:convertNumber type="currency" currencySymbol="" maxFractionDigits="0" />
+                                    </p:inputText>
                                 </h:panelGrid>
                             </p:panel>
                             <p:panel header="Costes Relacionados">
                                 <h:panelGrid columns="2">
                                     <h:outputLabel value="$ Costo" for="costo"/>
                                     <p:inputText id="costo" value="#{productoBean.producto.costo}"
-                                                 style="text-align: right" size="15"/>
+                                                 style="text-align: right" size="15">
+                                        <f:convertNumber type="currency" currencySymbol="$ " maxFractionDigits="0" />
+                                    </p:inputText>
                                     <h:outputLabel value="Precio de Venta" for="precioventa"/>
                                     <p:inputText id="precioventa" value="#{productoBean.producto.precioVenta}" 
                                                  style="text-align: right" size="15">
                                         <p:ajax event="keyup" update="utilidad" process="@this,costo"/>
+                                        <f:convertNumber type="currency" currencySymbol="$ " maxFractionDigits="0" />
                                     </p:inputText>                                
                                     <h:outputLabel value="$ Utilidad" for="utilidad"/>
                                     <p:inputText id="utilidad" value="#{productoBean.cp.utilidad(productoBean.producto)}"
-                                                 style="text-align: right" size="15" disabled="true"/>
+                                                 style="text-align: right" size="15" disabled="true">
+                                        <f:convertNumber type="currency" currencySymbol="$ " maxFractionDigits="0" />
+                                    </p:inputText>
                                 </h:panelGrid>
                             </p:panel>
                             <p:panel header="Dimenciones y Peso">
