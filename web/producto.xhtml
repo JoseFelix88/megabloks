@@ -39,11 +39,9 @@
 
                         <p:ajax event="rowSelect" listener="#{productoBean.onRowSelect}" oncomplete="PF('wgdlproducto').show()" 
                                 update="frmlista:msj,:frmproducto" />
-
-
                         <p:column headerText="Imagen" width="120">
-                            <p:graphicImage  value="#{FacesContext.getCurrentInstance().getExternalContext()}/resources/imgproductos/#{producto.codigobarras}.png"
-                                             width="90" height="90"/>
+                            <p:graphicImage  value="#{FacesContext.getCurrentInstance().getExternalContext()}/resources/imgproductos/#{producto.imagen}"
+                                             width="90" height="90" />
                         </p:column>
                         <p:column headerText="Codigo de Barras">
                             <h:outputText value="#{producto.codigobarras}" />
@@ -66,9 +64,6 @@
                             <h:outputText value="#{producto.precioVenta}" >
                                 <f:convertNumber type="currency" currencySymbol="$ " maxFractionDigits="0" />
                             </h:outputText>
-                        </p:column>
-                        <p:column headerText="">
-                            <p:commandButton process="@this,:frmimgproducto:codimag" value="Añadir Imagen" onclick="PF('dialogoimgproducto').show()"/>
                         </p:column>
                     </p:dataTable>
 
@@ -119,7 +114,13 @@
                                                        itemValue="#{categoriaItem.idcategorias}"
                                                        itemLabel="#{categoriaItem.descripcion}"/>
                                     </p:selectOneMenu>
+
+
                                 </h:panelGrid>
+                            </h:panelGrid>
+                            <h:panelGrid columns="3">
+                                <p:commandButton value="Añadir Imagen" onclick="PF('dialogoimgproducto').show()" 
+                                                 update=":frmimgproducto:codimag" icon="ui-icon-image"/>
                             </h:panelGrid>
                         </p:panel>
                         <h:panelGrid columns="3" style="margin-left: 50px">
@@ -184,9 +185,9 @@
                 <p:dialog header="Subir Imagen del Producto" widgetVar="dialogoimgproducto" modal="true">
                     <h:form id="frmimgproducto" enctype="multipart/form-data">
                         <h:panelGrid columns="3">
-                            <p:outputLabel id="codimag" value="#{producto.codigobarras}"/>
+                            <h:inputHidden id="codimag" value="#{productoBean.producto.codigobarras}"/>
                             <p:fileUpload id="txtAvatar" mode="simple" value="#{productoBean.imgproducto}"/>
-                            <p:commandButton value="Subir" icon="ui-icon-circle-arrow-n" update=":frmlista"
+                            <p:commandButton value="Subir" icon="ui-icon-circle-arrow-n" ajax="false"
                                              actionListener="#{productoBean.agregarimgproducto()}"/>
                         </h:panelGrid>
                     </h:form>

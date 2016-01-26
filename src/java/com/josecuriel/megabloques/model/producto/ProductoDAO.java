@@ -104,7 +104,7 @@ public class ProductoDAO extends database implements CRUD<Producto> {
                 + "productos.costo,productos.precio_venta,\n"
                 + "productos.utilidad,productos.estado,\n"
                 + "productos.fechacreacion, productos.categoria,\n"
-                + "productos.usuariosystem,alto,ancho,espesor,peso \n"
+                + "productos.usuariosystem,alto,ancho,espesor,peso,ifnull(imagen,'nd') as imagen \n"
                 + "FROM productos\n"
                 + "WHERE productos.idproductos = ?";
 
@@ -131,6 +131,7 @@ public class ProductoDAO extends database implements CRUD<Producto> {
                 producto.setAncho(rs.getFloat("ancho"));
                 producto.setEspesor(rs.getFloat("espesor"));
                 producto.setPeso(rs.getFloat("peso"));
+                producto.setImagen(rs.getString("imagen"));
             }
         } catch (SQLException e) {
             System.out.println("Error en la consulta del producto: " + e);
@@ -151,7 +152,7 @@ public class ProductoDAO extends database implements CRUD<Producto> {
                 + "productos.costo,productos.precio_venta,\n"
                 + "productos.utilidad,productos.estado,\n"
                 + "productos.fechacreacion, productos.categoria,\n"
-                + "productos.usuariosystem,alto,ancho,espesor,peso\n"
+                + "productos.usuariosystem,alto,ancho,espesor,peso,ifnull(imagen,'nd') as imagen\n"
                 + "FROM productos";
 
         try {
@@ -177,7 +178,8 @@ public class ProductoDAO extends database implements CRUD<Producto> {
                 producto.setAncho(rs.getFloat("ancho"));
                 producto.setEspesor(rs.getFloat("espesor"));
                 producto.setPeso(rs.getFloat("peso"));
-
+                producto.setImagen(rs.getString("imagen"));
+                System.out.println("imsgrn: "+producto.getImagen());
                 list.add(producto);
             }
         } catch (Exception e) {
@@ -196,8 +198,12 @@ public class ProductoDAO extends database implements CRUD<Producto> {
         } else {
             return false;
         }
+    }
+    
+    
 
-        
+    public void agregarImagenProducto(String codigobarras, String archivoimg) {
+         update("productos", "imagen = '"+archivoimg+"'", "codigobarras = "+codigobarras+"");
     }
 
 }

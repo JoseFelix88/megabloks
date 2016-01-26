@@ -39,6 +39,8 @@ public class Producto implements Serializable {
 
     private Date fechacreacion;
 
+    private String imagen;
+    
     private Categoria categoria = new Categoria();
 
     private Empleados empleados = new Empleados();
@@ -188,6 +190,14 @@ public class Producto implements Serializable {
 
     public void setEspesor(float espesor) {
         this.espesor = espesor;
+    }
+
+    public String getImagen() {
+        return imagen;
+    }
+
+    public void setImagen(String imagen) {
+        this.imagen = imagen;
     }
 
 }

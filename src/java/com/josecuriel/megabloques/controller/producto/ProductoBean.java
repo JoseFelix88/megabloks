@@ -45,7 +45,6 @@ public class ProductoBean implements Serializable {
     @PostConstruct
     public void init() {
         producto = new Producto();
-//        producto.setCodigobarras(gc.getCodigoAleatorioNumerico());
         productoDAO = new ProductoDAO();
         listcategoria = cdao.readAll();
         cargarListaproducto();
@@ -144,15 +143,24 @@ public class ProductoBean implements Serializable {
     public void agregarimgproducto() throws IOException {
         InputStream inputStream = null;
         OutputStream outputStream = null;
-
+        String tipoarchivo = imgproducto.getContentType().replace("image/", ".");
+                
         try {
+            System.out.println("contect type: "+imgproducto.getFileName());
             if (this.imgproducto.getSize() <= 0) {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error:", "Ud. debe seleccionar un archivo de imagen \".png\""));
                 return;
             }
 
-            if (!this.imgproducto.getFileName().endsWith(".png")) {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error:", "El archivo debe ser con extensión \".png\""));
+           /*if (!".png".equals(tipoarchivo)) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, 
+                        "Error:", "El archivo debe ser con extensión \".png\""));
+                return;
+            }*/
+           
+            if (!".jpeg".equals(tipoarchivo)) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, 
+                        "Error:", "El archivo debe ser con extensión \".jpeg\""));
                 return;
             }
 
@@ -163,10 +171,8 @@ public class ProductoBean implements Serializable {
 
             ServletContext servletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
             String folderimgproductos = (String) servletContext.getRealPath("/resources/imgproductos");
-
-            outputStream = new FileOutputStream(new File(folderimgproductos + "/" + this.producto.getCodigobarras()+ ".png"));
+            outputStream = new FileOutputStream(new File(folderimgproductos + "/" + this.producto.getCodigobarras()+ ""+tipoarchivo));
             inputStream = this.imgproducto.getInputstream();
-
             int read = 0;
             byte[] bytes = new byte[1024];
 
@@ -175,6 +181,9 @@ public class ProductoBean implements Serializable {
             }
 
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Correcto:", "Imagen del Producto Subida correctamente"));
+ 
+            productoDAO.agregarImagenProducto(producto.getCodigobarras(),producto.getCodigobarras()+""+tipoarchivo);
+            cargarListaproducto();
         } catch (Exception ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_FATAL, "Error fatal:", "Por favor contacte con su administrador " + ex.getMessage()));
         } finally {
