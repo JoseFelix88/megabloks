@@ -138,32 +138,31 @@ public class ProductoBean implements Serializable {
     }
 
     /*EL SIGUIENTE METODO Y TODO EL FUNCIONAMIENTO DE ESTA PARTE DEL PROYECTO
-    --REFERENTE A LA CARGA DE UNA IMAGEN A UNA CARPETA DEL SERVIDOR HACIDO TOMADO DE LA ENTRADA DEL BLOG:
-    --http://todoenjava.blogspot.com.co/2014/06/jsf-appagenda-parte-24-subir-imagen-al.html*/
+     --REFERENTE A LA CARGA DE UNA IMAGEN A UNA CARPETA DEL SERVIDOR HACIDO TOMADO DE LA ENTRADA DEL BLOG:
+     --http://todoenjava.blogspot.com.co/2014/06/jsf-appagenda-parte-24-subir-imagen-al.html*/
     public void agregarimgproducto() throws IOException {
         InputStream inputStream = null;
         OutputStream outputStream = null;
+        String[] extenciones = {".jpeg", ".png", ".gif", ".tiff", ".bmp"};
         String tipoarchivo = imgproducto.getContentType().replace("image/", ".");
-                
+
         try {
-            System.out.println("contect type: "+imgproducto.getFileName());
+
             if (this.imgproducto.getSize() <= 0) {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error:", "Ud. debe seleccionar un archivo de imagen \".png\""));
                 return;
             }
 
-           /*if (!".png".equals(tipoarchivo)) {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, 
-                        "Error:", "El archivo debe ser con extensión \".png\""));
-                return;
-            }*/
-           
-            if (!".jpeg".equals(tipoarchivo)) {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, 
-                        "Error:", "El archivo debe ser con extensión \".jpeg\""));
-                return;
-            }
-
+            /*if (!".png".equals(tipoarchivo)) {
+             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, 
+             "Error:", "El archivo debe ser con extensión \".png\""));
+             return;
+             }
+             if (!".jpeg".equals(tipoarchivo)) {
+             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
+             "Error:", "El archivo debe ser con extensión \".jpeg\""));
+             return;
+             }*/
             if (this.imgproducto.getSize() > 2097152) {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error:", "El archivo no puede ser más de 2mb"));
                 return;
@@ -171,19 +170,24 @@ public class ProductoBean implements Serializable {
 
             ServletContext servletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
             String folderimgproductos = (String) servletContext.getRealPath("/resources/imgproductos");
-            outputStream = new FileOutputStream(new File(folderimgproductos + "/" + this.producto.getCodigobarras()+ ""+tipoarchivo));
-            inputStream = this.imgproducto.getInputstream();
-            int read = 0;
-            byte[] bytes = new byte[1024];
+            for (String extencione : extenciones) {
+                if (extencione == null ? tipoarchivo == null : extencione.equals(tipoarchivo)) {
+                   
+                    outputStream = new FileOutputStream(new File(folderimgproductos + "/" + this.producto.getCodigobarras() + "" + tipoarchivo));
+                    inputStream = this.imgproducto.getInputstream();
+                    int read = 0;
+                    byte[] bytes = new byte[1024];
 
-            while ((read = inputStream.read(bytes)) != -1) {
-                outputStream.write(bytes, 0, read);
+                    while ((read = inputStream.read(bytes)) != -1) {
+                        outputStream.write(bytes, 0, read);
+                    }
+
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Correcto:", "Imagen del Producto Subida correctamente"));
+
+                    productoDAO.agregarImagenProducto(producto.getCodigobarras(), producto.getCodigobarras() + "" + tipoarchivo);
+                    cargarListaproducto();
+                }
             }
-
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Correcto:", "Imagen del Producto Subida correctamente"));
- 
-            productoDAO.agregarImagenProducto(producto.getCodigobarras(),producto.getCodigobarras()+""+tipoarchivo);
-            cargarListaproducto();
         } catch (Exception ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_FATAL, "Error fatal:", "Por favor contacte con su administrador " + ex.getMessage()));
         } finally {

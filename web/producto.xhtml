@@ -39,17 +39,23 @@
 
                         <p:ajax event="rowSelect" listener="#{productoBean.onRowSelect}" oncomplete="PF('wgdlproducto').show()" 
                                 update="frmlista:msj,:frmproducto" />
-                        <p:column headerText="Imagen" width="120">
-                            <p:graphicImage  value="#{FacesContext.getCurrentInstance().getExternalContext()}/resources/imgproductos/#{producto.imagen}"
-                                             width="90" height="90" />
+
+                        <p:column headerText="Imagen" width="80">
+
+                            <p:lightBox iframe="false" height="96" width="96"  id="lighbox1">  
+                                <h:outputLink title="#{producto.descripcion}"
+                                              value="#{FacesContext.getCurrentInstance().getExternalContext()}resources/imgproductos/#{producto.imagen}">
+                                    <h:graphicImage  name="/imgproductos/#{producto.imagen}" alt="sin definir" height="80" width="80" />    
+                                </h:outputLink>
+                            </p:lightBox>
                         </p:column>
                         <p:column headerText="Codigo de Barras">
                             <h:outputText value="#{producto.codigobarras}" />
                         </p:column>
-                        <p:column filterBy="#{producto.descripcion}" headerText="Descripcion" width="350">
+                        <p:column filterBy="#{producto.descripcion}" headerText="Descripcion" width="250">
                             <h:outputText value="#{producto.descripcion}" />
                         </p:column>
-                        <p:column filterBy="#{producto.categoria.descripcion}" headerText="Categoria">
+                        <p:column filterBy="#{producto.categoria.descripcion}" headerText="Categoria" width="100">
                             <h:outputText value="#{producto.categoria.descripcion}" />
                         </p:column>
                         <p:column headerText="Stock Actual">

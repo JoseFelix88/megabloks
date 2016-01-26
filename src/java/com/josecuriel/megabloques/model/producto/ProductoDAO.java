@@ -179,7 +179,7 @@ public class ProductoDAO extends database implements CRUD<Producto> {
                 producto.setEspesor(rs.getFloat("espesor"));
                 producto.setPeso(rs.getFloat("peso"));
                 producto.setImagen(rs.getString("imagen"));
-                System.out.println("imsgrn: "+producto.getImagen());
+                
                 list.add(producto);
             }
         } catch (Exception e) {
