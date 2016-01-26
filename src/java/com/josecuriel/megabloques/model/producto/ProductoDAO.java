@@ -106,7 +106,7 @@ public class ProductoDAO extends database implements CRUD<Producto> {
                 + "productos.fechacreacion, productos.categoria,\n"
                 + "productos.usuariosystem,alto,ancho,espesor,peso,ifnull(imagen,'nd') as imagen \n"
                 + "FROM productos\n"
-                + "WHERE productos.idproductos = ?";
+                + "WHERE productos.idproductos = ? ";
 
         try {
             ps = getConnection().prepareStatement(sql);
@@ -153,7 +153,7 @@ public class ProductoDAO extends database implements CRUD<Producto> {
                 + "productos.utilidad,productos.estado,\n"
                 + "productos.fechacreacion, productos.categoria,\n"
                 + "productos.usuariosystem,alto,ancho,espesor,peso,ifnull(imagen,'nd') as imagen\n"
-                + "FROM productos";
+                + "FROM productos where estado = 1";
 
         try {
             ps = getConnection().prepareStatement(sql);

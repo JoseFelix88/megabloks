@@ -112,6 +112,17 @@ public class ProductoBean implements Serializable {
         }
     }
 
+    public void delete(ActionEvent event) {
+        boolean rs = productoDAO.delete(producto.getIdproductos());
+        if (rs != false) {
+            cargarListaproducto();
+            FacesContext.getCurrentInstance().addMessage("",
+                    new FacesMessage(FacesMessage.SEVERITY_INFO, null, "PRODUCTO ELIMINADO CORRECTAMENTE."));
+        } else {
+            FacesContext.getCurrentInstance().addMessage("",
+                    new FacesMessage(FacesMessage.SEVERITY_FATAL, null, "PRODUCTO NO PUDO SER ELIMINADO."));
+        }
+    }
     public List<Producto> getListProductos() {
         return listProductos;
     }
@@ -153,16 +164,7 @@ public class ProductoBean implements Serializable {
                 return;
             }
 
-            /*if (!".png".equals(tipoarchivo)) {
-             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, 
-             "Error:", "El archivo debe ser con extensión \".png\""));
-             return;
-             }
-             if (!".jpeg".equals(tipoarchivo)) {
-             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
-             "Error:", "El archivo debe ser con extensión \".jpeg\""));
-             return;
-             }*/
+            
             if (this.imgproducto.getSize() > 2097152) {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error:", "El archivo no puede ser más de 2mb"));
                 return;

@@ -20,7 +20,7 @@
                     <p:growl id="msj" autoUpdate="false" showDetail="true" showSummary="false" />
                     <p:dataTable id="tbproducto" var="producto" value="#{productoBean.listProductos}" widgetVar="wgtable"
                                  filteredValue="#{productoBean.filtrolistProductos}" 
-                                 style="font-family: verdana; font-size: 12px" rowKey="#{producto.idproductos}"
+                                 style="font-family: verdana; font-size: 11px" rowKey="#{producto.idproductos}"
                                  selectionMode="single" selection="#{productoBean.producto}" 
                                  paginator="true"  paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
                                  rowsPerPageTemplate="5,10,15,20,30" scrollable="true"  scrollHeight="250"
@@ -40,19 +40,18 @@
                         <p:ajax event="rowSelect" listener="#{productoBean.onRowSelect}" oncomplete="PF('wgdlproducto').show()" 
                                 update="frmlista:msj,:frmproducto" />
 
-                        <p:column headerText="Imagen" width="80">
-
-                            <p:lightBox iframe="false" height="96" width="96"  id="lighbox1">  
+                        <p:column headerText="Imagen" width="60">
+                            <p:lightBox iframe="false" height="60" width="60"  id="lighbox1">  
                                 <h:outputLink title="#{producto.descripcion}"
                                               value="#{FacesContext.getCurrentInstance().getExternalContext()}resources/imgproductos/#{producto.imagen}">
-                                    <h:graphicImage  name="/imgproductos/#{producto.imagen}" alt="sin definir" height="80" width="80" />    
+                                    <h:graphicImage  name="/imgproductos/#{producto.imagen}" alt="sin definir" height="60" width="60" />    
                                 </h:outputLink>
                             </p:lightBox>
                         </p:column>
                         <p:column headerText="Codigo de Barras">
                             <h:outputText value="#{producto.codigobarras}" />
                         </p:column>
-                        <p:column filterBy="#{producto.descripcion}" headerText="Descripcion" width="250">
+                        <p:column filterBy="#{producto.descripcion}" headerText="Descripcion" width="200">
                             <h:outputText value="#{producto.descripcion}" />
                         </p:column>
                         <p:column filterBy="#{producto.categoria.descripcion}" headerText="Categoria" width="100">
@@ -76,6 +75,12 @@
                     <p:commandButton value="Add" actionListener="#{productoBean.nuevo(ae)}"
                                      icon="ui-icon-plus" oncomplete="PF('wgdlproducto').show()"
                                      update=":frmproducto"/>
+
+                    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                        <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                        <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                    </p:confirmDialog>
+
                 </h:form>
                 <p:dialog  header="DATOS DEL PRODUCTO" id="dlgproducto" widgetVar="wgdlproducto" 
                            minimizable="true" >
@@ -83,21 +88,47 @@
 
                         <p:menubar>
                             <p:submenu label="Opciones" icon="ui-icon-wrench">
-                                <p:menuitem process="@this" value="Nuevo" actionListener="#{productoBean.nuevo(ae)}"
-                                            icon="ui-icon-check" update=":frmproducto"/>
-                                <p:menuitem  update="frmlista:msj,frmlista:tbproducto" value="Guardar"
-                                             actionListener="#{productoBean.save(event)}" icon="ui-icon-disk"/>
-                                <p:menuitem value="Modificar" actionListener="#{productoBean.update(event)}" icon="ui-icon-pencil"
-                                            update=":frmlista" process="@this,frmproducto"/>
-                                <p:menuitem value="Eliminar"  icon="ui-icon-trash" />
+                                <p:menuitem process="@this" 
+                                            value="Nuevo" 
+                                            actionListener="#{productoBean.nuevo(ae)}"
+                                            icon="ui-icon-check" 
+                                            update=":frmproducto"/>
+                                <p:menuitem  update="frmlista:msj,frmlista:tbproducto" 
+                                             value="Guardar"
+                                             actionListener="#{productoBean.save(event)}" 
+                                             icon="ui-icon-disk">
+                                    <p:confirm header="Confirmar - Registro" 
+                                               message="Estas Seguro que Deseas GUARDAR el Producto?"
+                                               icon="ui-icon-alert" />
+                                </p:menuitem>
+                                <p:menuitem value="Modificar"
+                                            actionListener="#{productoBean.update(event)}" 
+                                            icon="ui-icon-pencil"
+                                            update=":frmlista" process="@this,frmproducto">
+                                    <p:confirm header="Confirmar - Actializacion" 
+                                               message="Estas Seguro que Deseas ACTUALIZAR el Producto?"
+                                               icon="ui-icon-alert" />
+                                </p:menuitem>
+                                <p:menuitem value="Eliminar"  
+                                            actionListener="#{productoBean.delete(event)}" 
+                                            icon="ui-icon-trash"
+                                            update="frmlista:msj,frmlista:tbproducto" >
+                                    <p:confirm header="Confirmar - Eliminacion" 
+                                               message="Estas Seguro que Deseas ELIMINAR el Producto?"
+                                               icon="ui-icon-alert" />
+                                </p:menuitem>
                                 <p:separator />
-                                <p:menuitem value="Salir"  icon="ui-icon-arrowrefresh-1-w" oncomplete ="PF('wgdlproducto').hide()"/>
+                                <p:menuitem value="Salir"  ajax="false"
+                                            icon="ui-icon-arrowrefresh-1-w" 
+                                            oncomplete ="PF('wgdlproducto').hide()"/>
                             </p:submenu>
 
                             <p:submenu label="Informes" icon="ui-icon-folder-open">
-                                <p:menuitem value="Listado de Existencias" icon="ui-icon-print" url="#" />
+                                <p:menuitem value="Listado de Existencias" 
+                                            icon="ui-icon-print" url="#" />
                                 <p:separator />
-                                <p:menuitem value="Listado de Precios" icon="ui-icon-print" url="#" />
+                                <p:menuitem value="Listado de Precios" 
+                                            icon="ui-icon-print" url="#" />
                             </p:submenu>
                         </p:menubar>
                         <p:panel header="Datos Generales">
@@ -186,6 +217,7 @@
                                 </h:panelGrid>
                             </p:panel>
                         </h:panelGrid>
+
                     </h:form>
                 </p:dialog>
                 <p:dialog header="Subir Imagen del Producto" widgetVar="dialogoimgproducto" modal="true">
