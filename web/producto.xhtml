@@ -85,7 +85,6 @@
                 <p:dialog  header="DATOS DEL PRODUCTO" id="dlgproducto" widgetVar="wgdlproducto" 
                            minimizable="true" >
                     <h:form id="frmproducto">
-
                         <p:menubar>
                             <p:submenu label="Opciones" icon="ui-icon-wrench">
                                 <p:menuitem process="@this" 
@@ -122,17 +121,11 @@
                                             icon="ui-icon-arrowrefresh-1-w" 
                                             oncomplete ="PF('wgdlproducto').hide()"/>
                             </p:submenu>
-
-                            <p:submenu label="Informes" icon="ui-icon-folder-open">
-                                <p:menuitem value="Listado de Existencias" 
-                                            icon="ui-icon-print" url="#" />
-                                <p:separator />
-                                <p:menuitem value="Listado de Precios" 
-                                            icon="ui-icon-print" url="#" />
-                            </p:submenu>
                         </p:menubar>
                         <p:panel header="Datos Generales">
-                            <h:panelGrid style="margin-left: 150px" columns="2" id="pdataproducto">
+
+                            <h:panelGrid style="margin-left: 20px" columns="2" id="pdataproducto">
+
                                 <h:panelGrid columns="2">
                                     <h:outputLabel value="ID. Producto: " for="idproducto"/>
                                     <p:inputText id="idproducto" value="#{productoBean.producto.idproductos}" 
@@ -140,7 +133,8 @@
                                     <h:outputLabel value="Codigo de Barras" for="codigobarras"/>
                                     <p:inputText id="codigobarras" value="#{productoBean.producto.codigobarras}"/>
                                     <h:outputLabel value="Descripcion" for="descripcion" />
-                                    <p:inputText id="descripcion" value="#{productoBean.producto.descripcion}" size="70"/>
+                                    <p:inputTextarea id="descripcion" value="#{productoBean.producto.descripcion}" 
+                                                     title="#{productoBean.producto.descripcion}" style="width: 500px"/>
                                     <p:outputLabel value="Categoria" for="categoria" />
                                     <p:selectOneMenu id="categoria" value="#{productoBean.producto.categoria.idcategorias}" required="true" 
                                                      requiredMessage="Selecciona una Categoria por favor. Gracias!"
@@ -151,13 +145,21 @@
                                                        itemValue="#{categoriaItem.idcategorias}"
                                                        itemLabel="#{categoriaItem.descripcion}"/>
                                     </p:selectOneMenu>
-
-
                                 </h:panelGrid>
-                            </h:panelGrid>
-                            <h:panelGrid columns="3">
-                                <p:commandButton value="Añadir Imagen" onclick="PF('dialogoimgproducto').show()" 
-                                                 update=":frmimgproducto:codimag" icon="ui-icon-image"/>
+
+                                <p:panel header="Añadir Imagen">
+                                    <h:panelGrid columns="1">
+                                        <p:lightBox iframe="false" height="60" width="60"  id="lighbox2">  
+                                            <h:outputLink title="#{productoBean.producto.descripcion}"
+                                                          value="#{FacesContext.getCurrentInstance().getExternalContext()}resources/imgproductos/#{productoBean.producto.imagen}">
+                                                <h:graphicImage  name="/imgproductos/#{productoBean.producto.imagen}"
+                                                                 alt="sin definir" height="100" width="100" />    
+                                            </h:outputLink>
+                                        </p:lightBox>
+                                        <p:commandButton value="Seleccione" onclick="PF('dialogoimgproducto').show()" 
+                                                         update=":frmimgproducto:codimag" icon="ui-icon-image"/>
+                                    </h:panelGrid>
+                                </p:panel>
                             </h:panelGrid>
                         </p:panel>
                         <h:panelGrid columns="3" style="margin-left: 50px">

@@ -16,19 +16,26 @@
 
         <div id="top">
             <ui:insert name="top">
-            
-            
+
+
             </ui:insert>
         </div>
         <div>
             <div id="left">
                 <ui:insert name="left"> 
                     <h:form>
-                        <p:menu toggleable="true">
+                        <p:menu toggleable="false" >
 
                             <p:menuitem value="Inicio" outcome="index" icon="ui-icon-home"/>
                             <p:submenu label="Productos">
                                 <p:menuitem value="Ver productos" outcome="producto" icon="ui-icon-clipboard" />
+                                <p:submenu label="Informes" icon="ui-icon-folder-open">
+                                    <p:menuitem value="Listado de Existencias" 
+                                                icon="ui-icon-print" url="#" />
+                                    <p:separator />
+                                    <p:menuitem value="Listado de Precios" 
+                                                icon="ui-icon-print" url="#" />
+                                </p:submenu>
                             </p:submenu>
                             <p:submenu label="Compras de Insumos">
                                 <p:menuitem value="Ingresar Compras" ajax="false" icon="ui-icon-cart"/>
@@ -50,8 +57,8 @@
                 <ui:insert name="content">Content</ui:insert>
             </div>
         </div>
-        <div id="bottom">
-            <ui:insert name="bottom">Bottom</ui:insert>
+        <div id="bottom" style="margin-top:  100px">
+            <ui:insert name="bottom" ><h3 style="font-family: monospace; font-size: 10px" align="center">Desarrollo Realizado Por: Jose Felix Curiel Gomez, Para Mama!!</h3></ui:insert>
         </div>
 
     </h:body>

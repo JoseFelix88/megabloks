@@ -96,7 +96,7 @@ public class ProductoBean implements Serializable {
             }
         } else {
             FacesContext.getCurrentInstance().addMessage("",
-                    new FacesMessage(FacesMessage.SEVERITY_FATAL, null, "PRODUCTO NO PUDO SER REGISTRADO. EL CODIGO DE BARRAS ESTA REGISTRADO, GENERA UNO NUEVO POR FAVOR."));
+                    new FacesMessage(FacesMessage.SEVERITY_FATAL, null, "EL PRODUCTO ESTA REGISTRADO."));
         }
     }
 

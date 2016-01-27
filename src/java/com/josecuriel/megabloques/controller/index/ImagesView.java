@@ -17,7 +17,6 @@ public class ImagesView {
         images = new ArrayList<>();
         for (int i = 1; i <= 3; i++) {
             images.add("b" + i + ".jpg");
-            System.out.println("b" + i + ".jpg");
         }
     }
  
