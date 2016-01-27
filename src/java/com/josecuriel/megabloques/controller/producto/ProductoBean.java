@@ -1,6 +1,5 @@
 package com.josecuriel.megabloques.controller.producto;
 
-import com.josecuriel.megabloques.model.empleado.EmpleadoDAO;
 import com.josecuriel.megabloques.model.producto.Producto;
 import com.josecuriel.megabloques.model.producto.ProductoDAO;
 import com.josecuriel.megabloques.model.producto.categoria.Categoria;
@@ -101,28 +100,37 @@ public class ProductoBean implements Serializable {
     }
 
     public void update(ActionEvent event) {
-        boolean rs = productoDAO.update(producto);
-        if (rs != false) {
-            cargarListaproducto();
-            FacesContext.getCurrentInstance().addMessage("",
-                    new FacesMessage(FacesMessage.SEVERITY_INFO, null, "PRODUCTO ACTUALIZADO CORRECTAMENTE."));
+        if (productoDAO.CodigoProducto(producto.getCodigobarras()) != true) {
+            boolean rs = productoDAO.update(producto);
+            if (rs != false) {
+                cargarListaproducto();
+                FacesContext.getCurrentInstance().addMessage(null,
+                        new FacesMessage(FacesMessage.SEVERITY_INFO, null,
+                                "PRODUCTO ACTUALIZADO CORRECTAMENTE."));
+            }
         } else {
-            FacesContext.getCurrentInstance().addMessage("",
-                    new FacesMessage(FacesMessage.SEVERITY_FATAL, null, "PRODUCTO NO PUDO SER ACTUALIZADO."));
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_WARN, null,
+                            "PRODUCTO NO PUDO SER ACTUALIZADO. DEVIDO AQUE NO ESTA REGISTRADO."));
         }
     }
 
     public void delete(ActionEvent event) {
-        boolean rs = productoDAO.delete(producto.getIdproductos());
-        if (rs != false) {
-            cargarListaproducto();
-            FacesContext.getCurrentInstance().addMessage("",
-                    new FacesMessage(FacesMessage.SEVERITY_INFO, null, "PRODUCTO ELIMINADO CORRECTAMENTE."));
+        if (productoDAO.CodigoProducto(producto.getCodigobarras()) != true) {
+            boolean rs = productoDAO.delete(producto.getIdproductos());
+            if (rs != false) {
+                cargarListaproducto();
+                FacesContext.getCurrentInstance().addMessage(null,
+                        new FacesMessage(FacesMessage.SEVERITY_INFO, null,
+                                "PRODUCTO ELIMINADO CORRECTAMENTE."));
+            }
         } else {
-            FacesContext.getCurrentInstance().addMessage("",
-                    new FacesMessage(FacesMessage.SEVERITY_FATAL, null, "PRODUCTO NO PUDO SER ELIMINADO."));
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_FATAL, null,
+                            "PRODUCTO NO PUDO SER ELIMINADO, DEVIDO AQUE NO ESTA REGISTRADO."));
         }
     }
+
     public List<Producto> getListProductos() {
         return listProductos;
     }
@@ -152,54 +160,61 @@ public class ProductoBean implements Serializable {
      --REFERENTE A LA CARGA DE UNA IMAGEN A UNA CARPETA DEL SERVIDOR HACIDO TOMADO DE LA ENTRADA DEL BLOG:
      --http://todoenjava.blogspot.com.co/2014/06/jsf-appagenda-parte-24-subir-imagen-al.html*/
     public void agregarimgproducto() throws IOException {
-        InputStream inputStream = null;
-        OutputStream outputStream = null;
-        String[] extenciones = {".jpeg", ".png", ".gif", ".tiff", ".bmp"};
-        String tipoarchivo = imgproducto.getContentType().replace("image/", ".");
-
-        try {
-
-            if (this.imgproducto.getSize() <= 0) {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error:", "Ud. debe seleccionar un archivo de imagen \".png\""));
-                return;
-            }
-
+        System.out.println(productoDAO.CodigoProducto(producto.getCodigobarras()) );
+        if (productoDAO.CodigoProducto(producto.getCodigobarras()) != true) {
             
-            if (this.imgproducto.getSize() > 2097152) {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error:", "El archivo no puede ser más de 2mb"));
-                return;
-            }
+            InputStream inputStream = null;
+            OutputStream outputStream = null;
+            String[] extenciones = {".jpeg", ".png", ".gif", ".tiff", ".bmp"};
+            String tipoarchivo = imgproducto.getContentType().replace("image/", ".");
 
-            ServletContext servletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
-            String folderimgproductos = (String) servletContext.getRealPath("/resources/imgproductos");
-            for (String extencione : extenciones) {
-                if (extencione == null ? tipoarchivo == null : extencione.equals(tipoarchivo)) {
-                   
-                    outputStream = new FileOutputStream(new File(folderimgproductos + "/" + this.producto.getCodigobarras() + "" + tipoarchivo));
-                    inputStream = this.imgproducto.getInputstream();
-                    int read = 0;
-                    byte[] bytes = new byte[1024];
+            try {
 
-                    while ((read = inputStream.read(bytes)) != -1) {
-                        outputStream.write(bytes, 0, read);
+                if (this.imgproducto.getSize() <= 0) {
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error:", "Ud. debe seleccionar un archivo de imagen \".png\""));
+                    return;
+                }
+
+                if (this.imgproducto.getSize() > 2097152) {
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error:", "El archivo no puede ser más de 2mb"));
+                    return;
+                }
+
+                ServletContext servletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
+                String folderimgproductos = (String) servletContext.getRealPath("/resources/imgproductos");
+                for (String extencione : extenciones) {
+                    if (extencione == null ? tipoarchivo == null : extencione.equals(tipoarchivo)) {
+
+                        outputStream = new FileOutputStream(new File(folderimgproductos + "/" + this.producto.getCodigobarras() + "" + tipoarchivo));
+                        inputStream = this.imgproducto.getInputstream();
+                        int read = 0;
+                        byte[] bytes = new byte[1024];
+
+                        while ((read = inputStream.read(bytes)) != -1) {
+                            outputStream.write(bytes, 0, read);
+                        }
+
+                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Correcto:", "Imagen del Producto Subida correctamente"));
+
+                        productoDAO.agregarImagenProducto(producto.getCodigobarras(), producto.getCodigobarras() + "" + tipoarchivo);
+                        cargarListaproducto();
                     }
+                }
+            } catch (Exception ex) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_FATAL, "Error fatal:", "Por favor contacte con su administrador " + ex.getMessage()));
+            } finally {
+                if (inputStream != null) {
+                    inputStream.close();
+                }
 
-                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Correcto:", "Imagen del Producto Subida correctamente"));
-
-                    productoDAO.agregarImagenProducto(producto.getCodigobarras(), producto.getCodigobarras() + "" + tipoarchivo);
-                    cargarListaproducto();
+                if (outputStream != null) {
+                    outputStream.close();
                 }
             }
-        } catch (Exception ex) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_FATAL, "Error fatal:", "Por favor contacte con su administrador " + ex.getMessage()));
-        } finally {
-            if (inputStream != null) {
-                inputStream.close();
-            }
-
-            if (outputStream != null) {
-                outputStream.close();
-            }
+        } else {
+            
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,
+                    null, "La Imagen del Producto NO! hasido Subida por que el producto aun no seá Registrado."));
         }
     }
 

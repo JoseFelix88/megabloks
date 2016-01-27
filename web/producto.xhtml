@@ -72,7 +72,8 @@
                         </p:column>
                     </p:dataTable>
 
-                    <p:commandButton value="Add" actionListener="#{productoBean.nuevo(ae)}"
+                    <p:commandButton value="Crear un Nuevo Producto" 
+                                     actionListener="#{productoBean.nuevo(ae)}"
                                      icon="ui-icon-plus" oncomplete="PF('wgdlproducto').show()"
                                      update=":frmproducto"/>
 
@@ -117,7 +118,7 @@
                                                icon="ui-icon-alert" />
                                 </p:menuitem>
                                 <p:separator />
-                                <p:menuitem value="Salir"  ajax="false"
+                                <p:menuitem value="Salir"    ajax="false"
                                             icon="ui-icon-arrowrefresh-1-w" 
                                             oncomplete ="PF('wgdlproducto').hide()"/>
                             </p:submenu>
@@ -147,13 +148,13 @@
                                     </p:selectOneMenu>
                                 </h:panelGrid>
 
-                                <p:panel header="Añadir Imagen">
+                                <p:panel header="Imagen" style="text-align: center">
                                     <h:panelGrid columns="1">
                                         <p:lightBox iframe="false" height="60" width="60"  id="lighbox2">  
                                             <h:outputLink title="#{productoBean.producto.descripcion}"
                                                           value="#{FacesContext.getCurrentInstance().getExternalContext()}resources/imgproductos/#{productoBean.producto.imagen}">
                                                 <h:graphicImage  name="/imgproductos/#{productoBean.producto.imagen}"
-                                                                 alt="sin definir" height="100" width="100" />    
+                                                                 alt="Sin Definir" height="100" width="100" />    
                                             </h:outputLink>
                                         </p:lightBox>
                                         <p:commandButton value="Seleccione" onclick="PF('dialogoimgproducto').show()" 

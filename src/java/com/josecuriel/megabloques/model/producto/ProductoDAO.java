@@ -106,11 +106,13 @@ public class ProductoDAO extends database implements CRUD<Producto> {
                 + "productos.fechacreacion, productos.categoria,\n"
                 + "productos.usuariosystem,alto,ancho,espesor,peso,ifnull(imagen,'nd') as imagen \n"
                 + "FROM productos\n"
-                + "WHERE productos.idproductos = ? ";
+                + "WHERE productos.idproductos = ? or productos.codigobarras = ?";
 
         try {
             ps = getConnection().prepareStatement(sql);
             ps.setInt(1, Integer.parseInt(key.toString()));
+            ps.setString(2, key.toString());
+            System.out.println(ps);
             rs = ps.executeQuery();
             if (rs.next()) {
                 producto = new Producto();
@@ -179,7 +181,7 @@ public class ProductoDAO extends database implements CRUD<Producto> {
                 producto.setEspesor(rs.getFloat("espesor"));
                 producto.setPeso(rs.getFloat("peso"));
                 producto.setImagen(rs.getString("imagen"));
-                
+
                 list.add(producto);
             }
         } catch (Exception e) {
@@ -199,11 +201,9 @@ public class ProductoDAO extends database implements CRUD<Producto> {
             return false;
         }
     }
-    
-    
 
     public void agregarImagenProducto(String codigobarras, String archivoimg) {
-         update("productos", "imagen = '"+archivoimg+"'", "codigobarras = "+codigobarras+"");
+        update("productos", "imagen = '" + archivoimg + "'", "codigobarras = " + codigobarras + "");
     }
 
 }
