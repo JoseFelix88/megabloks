@@ -13,6 +13,7 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import org.primefaces.event.SelectEvent;
+import org.primefaces.model.UploadedFile;
 
 @ManagedBean
 @ViewScoped
@@ -22,6 +23,8 @@ public class EmpleadoBean implements Serializable {
     private Empleados empleado;
     private List<Empleados> listEmpleados, filtrolistEmpleados;
     EmpleadoDAO dAO;
+
+    private UploadedFile fotoEmpleado;
 
     @PostConstruct
     public void init() {
@@ -44,11 +47,11 @@ public class EmpleadoBean implements Serializable {
                         new FacesMessage(FacesMessage.SEVERITY_INFO, null, "EMPLEADO REGISTRADO CORRECTAMENTE."));
             } else {
                 FacesContext.getCurrentInstance().addMessage("",
-                        new FacesMessage(FacesMessage.SEVERITY_INFO, null, "EMPLEADO NO FUE REGISTRADO."));
+                        new FacesMessage(FacesMessage.SEVERITY_ERROR, null, "EMPLEADO NO FUE REGISTRADO."));
             }
         } else {
             FacesContext.getCurrentInstance().addMessage("",
-                    new FacesMessage(FacesMessage.SEVERITY_INFO, null, "EL EMPLEADO  SE ENCUENTRA REGISTRADO."));
+                    new FacesMessage(FacesMessage.SEVERITY_FATAL, null, "EL EMPLEADO  SE ENCUENTRA REGISTRADO."));
         }
     }
 
@@ -59,11 +62,11 @@ public class EmpleadoBean implements Serializable {
                         new FacesMessage(FacesMessage.SEVERITY_INFO, null, "EMPLEADO ACTUALIZADO CORRECTAMENTE."));
             } else {
                 FacesContext.getCurrentInstance().addMessage("",
-                        new FacesMessage(FacesMessage.SEVERITY_INFO, null, "EMPLEADO NO FUE ACTUALIZADO."));
+                        new FacesMessage(FacesMessage.SEVERITY_ERROR, null, "EMPLEADO NO FUE ACTUALIZADO."));
             }
         } else {
             FacesContext.getCurrentInstance().addMessage("",
-                    new FacesMessage(FacesMessage.SEVERITY_INFO, null, "EL EMPLEADO NO SE ENCUENTRA REGISTRADO."));
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, null, "EL EMPLEADO NO SE ENCUENTRA REGISTRADO."));
         }
     }
 
@@ -74,11 +77,11 @@ public class EmpleadoBean implements Serializable {
                         new FacesMessage(FacesMessage.SEVERITY_INFO, null, "EMPLEADO ELIMINADO CORRECTAMENTE."));
             } else {
                 FacesContext.getCurrentInstance().addMessage("",
-                        new FacesMessage(FacesMessage.SEVERITY_INFO, null, "EMPLEADO NO FUE ELIMINADO."));
+                        new FacesMessage(FacesMessage.SEVERITY_ERROR, null, "EMPLEADO NO FUE ELIMINADO."));
             }
         } else {
             FacesContext.getCurrentInstance().addMessage("",
-                    new FacesMessage(FacesMessage.SEVERITY_INFO, null, "EL EMPLEADO NO SE ENCUENTRA REGISTRADO."));
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, null, "EL EMPLEADO NO SE ENCUENTRA REGISTRADO."));
         }
     }
 
@@ -114,5 +117,17 @@ public class EmpleadoBean implements Serializable {
 
     public void nuevo(ActionEvent ae) {
         empleado = new Empleados();
+    }
+
+    public UploadedFile getFotoEmpleado() {
+        return fotoEmpleado;
+    }
+
+    public void setFotoEmpleado(UploadedFile fotoEmpleado) {
+        this.fotoEmpleado = fotoEmpleado;
+    }
+    
+    public void agregarFotoEmpleado(ActionEvent event){
+        
     }
 }

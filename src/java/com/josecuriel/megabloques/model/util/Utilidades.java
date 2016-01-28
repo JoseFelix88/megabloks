@@ -1,5 +1,6 @@
 package com.josecuriel.megabloques.model.util;
 
+import java.io.File;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -37,4 +38,16 @@ public class Utilidades implements Serializable {
 
         return null;
     }
+     
+     public  boolean crearDirecctorio(String urlOrigen, String nombreCarpeta){
+         File ruta = new File(urlOrigen);
+         
+         System.out.println("ruta: "+ruta.getPath());
+         if (ruta.isDirectory()) {
+             File nuevaruta = new File(ruta.getPath()+"/"+nombreCarpeta);
+             nuevaruta.mkdirs();
+             return true;
+         }
+         return ruta.isDirectory();
+     }
 }

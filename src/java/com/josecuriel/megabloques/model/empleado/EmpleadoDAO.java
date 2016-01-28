@@ -34,7 +34,7 @@ public class EmpleadoDAO extends database implements CRUD<Empleados> {
             ps.setString(12, c.getTipocontrato());
             ps.setString(13, c.getFormapago());
             ps.setInt(14, c.getSueldobase());
-            ps.setString(15, c.getContracenia());
+            ps.setString(15, c.getContrasenia());
             ps.execute();
             return true;
         } catch (Exception e) {
@@ -70,7 +70,7 @@ public class EmpleadoDAO extends database implements CRUD<Empleados> {
             ps.setString(11, c.getTipocontrato());
             ps.setString(12, c.getFormapago());
             ps.setInt(13, c.getSueldobase());
-            ps.setString(14, c.getContracenia());
+            ps.setString(14, c.getContrasenia());
             ps.setInt(15, c.getIdempleados());
 
             ps.execute();
@@ -88,7 +88,7 @@ public class EmpleadoDAO extends database implements CRUD<Empleados> {
         String sql = "SELECT empleados.idempleados, empleados.tipodocumento, empleados.nombre1, empleados.nombre2,\n"
                 + "empleados.apellido1, empleados.apellido2, empleados.telefono, empleados.direccion, empleados.email,\n"
                 + "empleados.cargo, empleados.departamento, empleados.tipocontrato, empleados.formapago, empleados.sueldobase,\n"
-                + "empleados.fechaingreso, empleados.fechasalida, empleados.estado, empleados.`contraceña`, empleados.huella\n"
+                + "empleados.fechaingreso, empleados.fechasalida, empleados.estado, md5(empleados.`contraseña`) as clave, empleados.huella\n"
                 + "FROM empleados WHERE idempleados = ?";
         ResultSet rs;
 
@@ -112,9 +112,9 @@ public class EmpleadoDAO extends database implements CRUD<Empleados> {
                 empleado.setFormapago(rs.getString("formapago"));
                 empleado.setSueldobase(rs.getInt("sueldobase"));
                 empleado.setFechaingreso(rs.getDate("fechaingreso"));
-                //empleado.setFechasalida(rs.getDate("fechasalida"));
+//                empleado.setFechasalida(rs.getDate("fechasalida"));
                 empleado.setEstado(rs.getBoolean("estado"));
-                empleado.setContracenia(rs.getString("contraceña"));
+                empleado.setContrasenia(rs.getString("clave"));
             }
         } catch (SQLException e) {
             System.out.println("error en el momento de la consulta "+e);
@@ -126,16 +126,17 @@ public class EmpleadoDAO extends database implements CRUD<Empleados> {
 
     @Override
     public List<Empleados> readAll() {
-        List<Empleados> list = new ArrayList<Empleados>();
+        List<Empleados> list = new ArrayList<>();
         Empleados empleado;
         PreparedStatement ps;
         String sql = "SELECT empleados.idempleados, empleados.tipodocumento, empleados.nombre1, empleados.nombre2,\n"
                 + "empleados.apellido1, empleados.apellido2, empleados.telefono, empleados.direccion, empleados.email,\n"
                 + "empleados.cargo, empleados.departamento, empleados.tipocontrato, empleados.formapago, empleados.sueldobase,\n"
-                + "empleados.fechaingreso, empleados.fechasalida, empleados.estado, empleados.`contraceña`, empleados.huella\n"
+                + "empleados.fechaingreso, empleados.fechasalida, empleados.estado, md5(empleados.`contraseña`) as clave, empleados.huella\n"
                 + "FROM empleados ";
         ResultSet rs;
 
+        System.out.println(sql);
         try {
             ps = getConnection().prepareStatement(sql);
             rs = ps.executeQuery();
@@ -157,12 +158,12 @@ public class EmpleadoDAO extends database implements CRUD<Empleados> {
                 empleado.setFechaingreso(rs.getDate("fechaingreso"));
                 empleado.setFechasalida(rs.getDate("fechasalida"));
                 empleado.setEstado(rs.getBoolean("estado"));
-                empleado.setContracenia(rs.getString("contraceña"));
+                empleado.setContrasenia(rs.getString("clave"));
                 
                 list.add(empleado);
             }
-        } catch (SQLException e) {
-        } catch (NumberFormatException e) {
+        } catch (SQLException | NumberFormatException e) {
+            System.out.println("error al momento de llenar la lista de empleados: "+e);
         }
         
         return list;

@@ -240,13 +240,15 @@ public class Empleados implements Serializable {
         this.huella = huella;
     }
 
-    public String getContracenia() {
+    public String getContrasenia() {
         return contrasenia;
     }
 
-    public void setContracenia(String contrasenia) {
+    public void setContrasenia(String contrasenia) {
         this.contrasenia = contrasenia;
     }
+
+    
 
     public String getFoto() {
         return foto;

@@ -28,9 +28,9 @@ a:link:hover, a:visited:hover  {
   text-decoration : underline;
 }
 
-.imagproducto {
+.iconhuella {
     
     width: 64px; height: 60px;
     background-size: 55px;
-    background-image: url("#{facesContext.externalContext.request.contextPath}/imgproductos/5135846.png") !important;
+    background-image: url("#{facesContext.externalContext.request.contextPath}/imgproductos/huella ico.png") !important;
 }

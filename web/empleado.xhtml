@@ -66,7 +66,7 @@
                         </p:column>
                     </p:dataTable>
 
-                    <p:commandButton value="Crear un Nuevo Producto" 
+                    <p:commandButton value="Crear un Nuevo Empleado" 
                                      actionListener="#{empleadoBean.nuevo(ae)}"
                                      icon="ui-icon-plus" oncomplete="PF('wgdlempleado').show()"
                                      update=":frmempleado"/>
@@ -92,7 +92,7 @@
                                              actionListener="#{empleadoBean.save(event)}" 
                                              icon="ui-icon-disk">
                                     <p:confirm header="Confirmar - Registro" 
-                                               message="Estas Seguro que Deseas GUARDAR el Producto?"
+                                               message="Estas Seguro que Deseas GUARDAR el Empleado?"
                                                icon="ui-icon-alert" />
                                 </p:menuitem>
                                 <p:menuitem value="Modificar"
@@ -100,7 +100,7 @@
                                             icon="ui-icon-pencil"
                                             update=":frmlista" process="@this,frmempleado">
                                     <p:confirm header="Confirmar - Actializacion" 
-                                               message="Estas Seguro que Deseas ACTUALIZAR el Producto?"
+                                               message="Estas Seguro que Deseas ACTUALIZAR el Empleado?"
                                                icon="ui-icon-alert" />
                                 </p:menuitem>
                                 <p:menuitem value="Eliminar"  
@@ -108,7 +108,7 @@
                                             icon="ui-icon-trash"
                                             update="frmlista:msj,frmlista:tbempleado" >
                                     <p:confirm header="Confirmar - Eliminacion" 
-                                               message="Estas Seguro que Deseas ELIMINAR el Producto?"
+                                               message="Estas Seguro que Deseas ELIMINAR el Empleado?"
                                                icon="ui-icon-alert" />
                                 </p:menuitem>
                                 <p:separator />
@@ -119,30 +119,33 @@
                         </p:menubar>
                         <p:panel header="Datos Generales">
 
-                            <h:panelGrid style="margin-left: 20px" columns="2" id="pdataempleado">
+                            <h:panelGrid style="margin-left: 20px" columns="3" id="pdataempleado">
 
-                                <h:panelGrid columns="2">
+                                <h:panelGrid columns="4">
                                     <h:outputLabel value="Tipo de Documento " for="idempleado"/>
                                     <p:selectOneMenu id="categoria" value="#{empleadoBean.empleado.tipodocumento}" 
                                                      converter="omnifaces.SelectItemsConverter" style="width: 180px">
-                                        <f:selectItem itemLabel="Seleccione"/>
-                                        <f:selectItem itemLabel="CEDULA DE CIUDADANIA"  itemValue="CC"/>
-                                        <f:selectItem itemLabel="CEDULA DE EXTRANJERIA"  itemValue="CE"/>
+                                        <f:selectItem itemLabel="Seleccione" itemValue="#{empleadoBean.empleado.tipodocumento}"/>
+                                        <f:selectItem itemLabel="CEDULA DE CIUDADANIA"  itemValue="CEDULA DE CIUDADANIA"/>
+                                        <f:selectItem itemLabel="CEDULA DE EXTRANJERIA"  itemValue="CEDULA DE EXTRANJERIA"/>
                                         <f:selectItem itemLabel="PASAPORTE"  itemValue="PASAPORTE"/>
                                     </p:selectOneMenu>
+                                    
                                     <p:outputLabel value="ID. Empleado" for="idempleado" />
                                     <p:inputText id="idempleado" value="#{empleadoBean.empleado.idempleados}" 
-                                                 disabled="false" style="text-align: right" size="5"/> 
-                                    <h:panelGrid columns="4">
-                                        <h:outputLabel value="Primer Apellido" for="ape1"/>
-                                        <p:inputText id="ape1" value="#{empleadoBean.empleado.apellido1}"/>
-                                        <h:outputLabel value="Segundo Apellido" for="ape2" />
-                                        <p:inputText id="ape2" value="#{empleadoBean.empleado.apellido2}" />
-                                        <h:outputLabel value="Primer Nombre" for="nom1"/>
-                                        <p:inputText id="nom1" value="#{empleadoBean.empleado.nombre1}"/>
-                                        <h:outputLabel value="Segundo Nombre" for="nom2" />
-                                        <p:inputText id="nom2" value="#{empleadoBean.empleado.nombre2}" />
-                                    </h:panelGrid>
+                                                 disabled="false" style="text-align: right">
+                                        <p:ajax event="keyup" update="idacceso" process="@this,idempleado"/>
+                                    </p:inputText>
+
+                                    <h:outputLabel value="Primer Apellido" for="ape1"/>
+                                    <p:inputText id="ape1" value="#{empleadoBean.empleado.apellido1}"/>
+                                    <h:outputLabel value="Segundo Apellido" for="ape2" />
+                                    <p:inputText id="ape2" value="#{empleadoBean.empleado.apellido2}" />
+                                    <h:outputLabel value="Primer Nombre" for="nom1"/>
+                                    <p:inputText id="nom1" value="#{empleadoBean.empleado.nombre1}"/>
+                                    <h:outputLabel value="Segundo Nombre" for="nom2" />
+                                    <p:inputText id="nom2" value="#{empleadoBean.empleado.nombre2}" />
+
                                 </h:panelGrid>
 
                                 <p:panel header="Foto" style="text-align: center">
@@ -158,75 +161,91 @@
                                                          update=":frmimgempleado:codimag" icon="ui-icon-image"/>
                                     </h:panelGrid>
                                 </p:panel>
+
+                                <p:panel header="Credenciales de Acceso" style="text-align: center">
+                                    <p:panelGrid columns="2">
+                                        <p:outputLabel value="ID. de Aceso" for="idacceso" />
+                                        <p:inputText id="idacceso" value="#{empleadoBean.empleado.idempleados}" 
+                                                     disabled="true" style="text-align: right"/> 
+
+                                        <h:outputLabel value="Contraseña" for="clave"/>
+                                        <p:password id="clave" 
+                                                    value="#{empleadoBean.empleado.contrasenia}"
+                                                    feedback="true"
+                                                    weakLabel="Debil" goodLabel="Buena" strongLabel="Fuerte"
+                                                    promptLabel="Por favor Ingresa la Clave"/>
+                                    </p:panelGrid>
+                                </p:panel>
                             </h:panelGrid>
                         </p:panel>
-                        <h:panelGrid columns="3" style="margin-left: 50px">
-                            <p:panel header="Stocks">
+                        <h:panelGrid columns="3" style="margin-left: 10px">
+                            <p:panel header="Ubicacion">
                                 <h:panelGrid columns="2">
-                                    <h:outputLabel value="Stock Actual" for="stockactual"/>
-                                    <p:inputText id="stockactual" value="#{empleadoBean.empleado.stockActual}" 
-                                                 style="text-align: right" size="10">
-                                        <f:convertNumber type="currency" currencySymbol="" maxFractionDigits="0" />
-                                    </p:inputText>
-                                    <h:outputLabel value="Strock Aviso" for="stockaviso"/>
-                                    <p:inputText id="stockaviso" value="#{empleadoBean.empleado.stockAviso}" 
-                                                 style="text-align: right" size="10" >
-                                        <f:convertNumber type="currency" currencySymbol="" maxFractionDigits="0" />
-                                    </p:inputText>                                
-                                    <h:outputLabel value="Strock Minimo" for="stockminimo"/>
-                                    <p:inputText id="stockminimo" value="#{empleadoBean.empleado.stockMinimo}" 
-                                                 style="text-align: right" size="10">
-                                        <f:convertNumber type="currency" currencySymbol="" maxFractionDigits="0" />
+                                    <h:outputLabel value="Telefonos" for="telefono"/>
+                                    <p:inputText id="telefono" value="#{empleadoBean.empleado.telefono}" />
+
+                                    <h:outputLabel value="Direccion" for="direccion"/>
+                                    <p:inputText id="direccion" value="#{empleadoBean.empleado.direccion}"  
+                                                 size="30"/>
+
+                                    <h:outputLabel value="E-Mail" for="email"/>
+                                    <p:inputText id="email" value="#{empleadoBean.empleado.email}" />
+
+                                </h:panelGrid>
+                            </p:panel>
+                            <p:panel header="Contratacion">
+                                <h:panelGrid columns="2">
+                                    <h:outputLabel value="Cargo" for="cargo"/>
+                                    <p:inputText id="cargo" 
+                                                 value="#{empleadoBean.empleado.cargo}"/>
+
+                                    <h:outputLabel value="Departamento" for="dpto"/>
+                                    <p:inputText id="dpto" value="#{empleadoBean.empleado.departamento}" />
+
+                                    <h:outputLabel value="Tipo de Contrato" for="tipocontrato"/>
+                                    <p:selectOneMenu id="tipocontrato" value="#{empleadoBean.empleado.tipocontrato}" 
+                                                     converter="omnifaces.SelectItemsConverter" style="width: 180px">
+                                        <f:selectItem itemLabel="Seleccione" itemValue="#{empleadoBean.empleado.tipocontrato}"/>
+                                        <f:selectItem itemLabel="FIJO"  itemValue="FIJO"/>
+                                        <f:selectItem itemLabel="INDEFINIDO"  itemValue="INDEFINIDO"/>
+                                        <f:selectItem itemLabel="OBRA O LABOR"  itemValue="OBRA O LABOR"/>
+                                    </p:selectOneMenu>
+
+                                    <h:outputLabel value="Forma de Pago" for="Fpago"/>
+                                    <p:selectOneMenu id="Fpago" value="#{empleadoBean.empleado.formapago}" 
+                                                     converter="omnifaces.SelectItemsConverter" style="width: 180px">
+                                        <f:selectItem itemLabel="Seleccione" itemValue="#{empleadoBean.empleado.formapago}"/>
+                                        <f:selectItem itemLabel="CHEQUE"  itemValue="CHEQUE"/>
+                                        <f:selectItem itemLabel="EFECTIVO"  itemValue="EFECTIVO"/>
+                                    </p:selectOneMenu>
+                                    <h:outputLabel value="$ Sueldo Basico" for="salario"/>
+                                    <p:inputText id="salario" value="#{empleadoBean.empleado.sueldobase}">
+                                        <f:convertNumber type="currency" currencySymbol="$" maxFractionDigits="0" />
                                     </p:inputText>
                                 </h:panelGrid>
                             </p:panel>
-                            <p:panel header="Costes Relacionados">
+                            <p:panel header="Mas Informacion" style="width: 250px; align-content: center">
                                 <h:panelGrid columns="2">
-                                    <h:outputLabel value="$ Costo" for="costo"/>
-                                    <p:inputText id="costo" value="#{empleadoBean.empleado.costo}"
-                                                 style="text-align: right" size="15">
-                                        <f:convertNumber type="currency" currencySymbol="$ " maxFractionDigits="0" />
-                                    </p:inputText>
-                                    <h:outputLabel value="Precio de Venta" for="precioventa"/>
-                                    <p:inputText id="precioventa" value="#{empleadoBean.empleado.precioVenta}" 
-                                                 style="text-align: right" size="15">
-                                        <p:ajax event="keyup" update="utilidad" process="@this,costo"/>
-                                        <f:convertNumber type="currency" currencySymbol="$ " maxFractionDigits="0" />
-                                    </p:inputText>                                
-                                    <h:outputLabel value="$ Utilidad" for="utilidad"/>
-                                    <p:inputText id="utilidad" value="#{empleadoBean.cp.utilidad(empleadoBean.empleado)}"
-                                                 style="text-align: right" size="15" disabled="true">
-                                        <f:convertNumber type="currency" currencySymbol="$ " maxFractionDigits="0" />
-                                    </p:inputText>
+                                    <h:outputLabel value="Fecha de Ingreso" for="Fingreso"/>
+                                    <p:calendar id="Fingreso" value="#{empleadoBean.empleado.fechaingreso}" disabled="true" size="10"/>
+                                    <h:outputLabel value="Fecha de Salida" for="Fsalida"/>
+                                    <p:calendar id="Fsalida" value="#{empleadoBean.empleado.fechasalida}" disabled="true" size="10"/>
+                                    <h:outputLabel value="Estado" for="estado"/>
+                                    <p:inputText id="estado" value="#{empleadoBean.empleado.estado}" size="5"/>
                                 </h:panelGrid>
-                            </p:panel>
-                            <p:panel header="Dimenciones y Peso">
-                                <h:panelGrid columns="2">
-                                    <h:outputLabel value="Ancho" for="ancho"/>
-                                    <p:inputText id="ancho" value="#{empleadoBean.empleado.ancho}"
-                                                 style="text-align: right" size="5"/>
-                                    <h:outputLabel value="Alto" for="alto"/>
-                                    <p:inputText id="alto" value="#{empleadoBean.empleado.alto}" 
-                                                 style="text-align: right" size="5"/>                                
-                                    <h:outputLabel value="Espesor" for="espesor"/>
-                                    <p:inputText id="espesor" value="#{empleadoBean.empleado.espesor}"
-                                                 style="text-align: right" size="5"/>
-                                    <h:outputLabel value="Peso en KG" for="peso"/>
-                                    <p:inputText id="peso" value="#{empleadoBean.empleado.peso}"
-                                                 style="text-align: right" size="5"/>
-                                </h:panelGrid>
+                                <p:commandButton value="Tomar Huella Digital"  />
                             </p:panel>
                         </h:panelGrid>
 
                     </h:form>
                 </p:dialog>
-                <p:dialog header="Subir Imagen del Producto" widgetVar="dialogoimgempleado" modal="true">
+                <p:dialog header="Subir Foto del Empleado" widgetVar="dialogoimgempleado" modal="true">
                     <h:form id="frmimgempleado" enctype="multipart/form-data">
                         <h:panelGrid columns="3">
-                            <h:inputHidden id="codimag" value="#{empleadoBean.empleado.codigobarras}"/>
-                            <p:fileUpload id="txtAvatar" mode="simple" value="#{empleadoBean.imgempleado}"/>
+                            <h:inputHidden id="codimag" value="#{empleadoBean.empleado.idempleados}"/>
+                            <p:fileUpload id="txtAvatar" mode="simple" value="#{empleadoBean.fotoEmpleado}"/>
                             <p:commandButton value="Subir" icon="ui-icon-circle-arrow-n" ajax="false"
-                                             actionListener="#{empleadoBean.agregarimgempleado()}"/>
+                                             actionListener="#{empleadoBean.agregarFotoEmpleado(event)}"/>
                         </h:panelGrid>
                     </h:form>
                 </p:dialog>
