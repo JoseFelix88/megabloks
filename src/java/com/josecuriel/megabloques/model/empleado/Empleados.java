@@ -50,7 +50,9 @@ public class Empleados implements Serializable {
     
     private Boolean estado;
     
-    private String contracenia;
+    private String foto;
+    
+    private String contrasenia;
     private List<Operadorproduccion> operadorproduccionList;
 
     public Empleados() {
@@ -239,11 +241,19 @@ public class Empleados implements Serializable {
     }
 
     public String getContracenia() {
-        return contracenia;
+        return contrasenia;
     }
 
-    public void setContracenia(String contracenia) {
-        this.contracenia = contracenia;
+    public void setContracenia(String contrasenia) {
+        this.contrasenia = contrasenia;
+    }
+
+    public String getFoto() {
+        return foto;
+    }
+
+    public void setFoto(String foto) {
+        this.foto = foto;
     }
     
 }

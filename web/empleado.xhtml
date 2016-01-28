@@ -1,0 +1,235 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <body>
+
+        <ui:composition template="./Template.xhtml">
+
+            <ui:define name="top">
+                <h2 align="center">EMPLEADOS</h2>
+            </ui:define>
+
+            <ui:define name="content">
+
+                <h:form id="frmlista">
+                    <p:growl id="msj" autoUpdate="false" showDetail="true" showSummary="false" />
+                    <p:dataTable id="tbempleado" var="empleado" value="#{empleadoBean.listEmpleados}" widgetVar="wgtable"
+                                 filteredValue="#{empleadoBean.filtrolistEmpleados}" 
+                                 style="font-family: verdana; font-size: 11px" rowKey="#{empleado.idempleados}"
+                                 selectionMode="single" selection="#{empleadoBean.empleado}" 
+                                 paginator="true"  paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+                                 rowsPerPageTemplate="5,10,15,20,30" scrollable="true"  scrollHeight="250"
+                                 emptyMessage="No se Encontraron Empleados...">
+                        <f:facet name="header">
+                            <h2 align="center">LISTADO GENERAL DE EMPLEADOS Y COLABORADORES</h2>
+
+                            <p:outputPanel style="alignment-adjust: after-edge; margin-left: 10px">
+
+                                <h:outputText value="Buscar Por: " />
+                                <p:inputText  id="globalFilter" onkeyup="PF('wgtable').filter()"
+                                              style="width:300px; margin-left: 10px" 
+                                              placeholder="ID, Nombre y Apellidos o Cargo"/>
+                            </p:outputPanel>
+                        </f:facet>
+
+                        <p:ajax event="rowSelect" listener="#{empleadoBean.onRowSelect}" 
+                                oncomplete="PF('wgdlempleado').show()" 
+                                update="frmlista:msj,:frmempleado" />
+
+                        <p:column headerText="Foto" width="60">
+                            <p:lightBox iframe="false" height="60" width="60"  id="lighbox1">  
+                                <h:outputLink title="#{empleado.apellido1} #{empleado.nombre1}"
+                                              value="#{FacesContext.getCurrentInstance().getExternalContext()}resources/empleados/#{empleado.foto}">
+                                    <h:graphicImage  name="/empleados/#{empleado.foto}" alt="sin definir" height="60" width="60" />    
+                                </h:outputLink>
+                            </p:lightBox>
+                        </p:column>
+                        <p:column headerText="Tipo Documento y ID">
+                            <h:outputText value="#{empleado.tipodocumento} - #{empleado.idempleados}" />
+                        </p:column>
+                        <p:column filterBy="#{empleado.apellido1} #{empleado.apellido2} #{empleado.nombre1} #{empleado.nombre2}" 
+                                  headerText="Nombres y Apellidos" width="200">
+                            <h:outputText value="#{empleado.apellido1} #{empleado.apellido2} #{empleado.nombre1} #{empleado.nombre2}" />
+                        </p:column>
+                        <p:column filterBy="#{empleado.cargo} - #{empleado.departamento}" headerText="Cargo y Departamento" width="100">
+                            <h:outputText value="#{empleado.cargo} - #{empleado.departamento}" />
+                        </p:column>
+                        <p:column headerText="Salario Base">
+                            <h:outputText value="#{empleado.sueldobase}" >
+                                <f:convertNumber type="currency" currencySymbol="$ " maxFractionDigits="0" />
+                            </h:outputText>
+                        </p:column>
+                    </p:dataTable>
+
+                    <p:commandButton value="Crear un Nuevo Producto" 
+                                     actionListener="#{empleadoBean.nuevo(ae)}"
+                                     icon="ui-icon-plus" oncomplete="PF('wgdlempleado').show()"
+                                     update=":frmempleado"/>
+
+                    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                        <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                        <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                    </p:confirmDialog>
+
+                </h:form>
+                <p:dialog  header="EMPLEADO" id="dlgempleado" widgetVar="wgdlempleado" 
+                           minimizable="true" >
+                    <h:form id="frmempleado">
+                        <p:menubar>
+                            <p:submenu label="Opciones" icon="ui-icon-wrench">
+                                <p:menuitem process="@this" 
+                                            value="Nuevo" 
+                                            actionListener="#{empleadoBean.nuevo(ae)}"
+                                            icon="ui-icon-check" 
+                                            update=":frmempleado"/>
+                                <p:menuitem  update="frmlista:msj,frmlista:tbempleado" 
+                                             value="Guardar"
+                                             actionListener="#{empleadoBean.save(event)}" 
+                                             icon="ui-icon-disk">
+                                    <p:confirm header="Confirmar - Registro" 
+                                               message="Estas Seguro que Deseas GUARDAR el Producto?"
+                                               icon="ui-icon-alert" />
+                                </p:menuitem>
+                                <p:menuitem value="Modificar"
+                                            actionListener="#{empleadoBean.update(event)}" 
+                                            icon="ui-icon-pencil"
+                                            update=":frmlista" process="@this,frmempleado">
+                                    <p:confirm header="Confirmar - Actializacion" 
+                                               message="Estas Seguro que Deseas ACTUALIZAR el Producto?"
+                                               icon="ui-icon-alert" />
+                                </p:menuitem>
+                                <p:menuitem value="Eliminar"  
+                                            actionListener="#{empleadoBean.delete(event)}" 
+                                            icon="ui-icon-trash"
+                                            update="frmlista:msj,frmlista:tbempleado" >
+                                    <p:confirm header="Confirmar - Eliminacion" 
+                                               message="Estas Seguro que Deseas ELIMINAR el Producto?"
+                                               icon="ui-icon-alert" />
+                                </p:menuitem>
+                                <p:separator />
+                                <p:menuitem value="Salir"    ajax="false"
+                                            icon="ui-icon-arrowrefresh-1-w" 
+                                            oncomplete ="PF('wgdlempleado').hide()"/>
+                            </p:submenu>
+                        </p:menubar>
+                        <p:panel header="Datos Generales">
+
+                            <h:panelGrid style="margin-left: 20px" columns="2" id="pdataempleado">
+
+                                <h:panelGrid columns="2">
+                                    <h:outputLabel value="ID. Producto: " for="idempleado"/>
+                                    <p:inputText id="idempleado" value="#{empleadoBean.empleado.idempleados}" 
+                                                 disabled="false" style="text-align: right" size="5"/> 
+                                    <h:outputLabel value="Codigo de Barras" for="codigobarras"/>
+                                    <p:inputText id="codigobarras" value="#{empleadoBean.empleado.codigobarras}"/>
+                                    <h:outputLabel value="Descripcion" for="descripcion" />
+                                    <p:inputTextarea id="descripcion" value="#{empleadoBean.empleado.descripcion}" 
+                                                     title="#{empleadoBean.empleado.descripcion}" style="width: 500px"/>
+                                    <p:outputLabel value="Categoria" for="categoria" />
+                                    <p:selectOneMenu id="categoria" value="#{empleadoBean.empleado.categoria.idcategorias}" required="true" 
+                                                     requiredMessage="Selecciona una Categoria por favor. Gracias!"
+                                                     converter="omnifaces.SelectItemsConverter" style="width: 180px">
+                                        <f:selectItem itemLabel="Seleccione"  itemValue="#{categoriaItem.idcategorias}"/>
+                                        <f:selectItems value="#{empleadoBean.listcategoria}"
+                                                       var="categoriaItem"
+                                                       itemValue="#{categoriaItem.idcategorias}"
+                                                       itemLabel="#{categoriaItem.descripcion}"/>
+                                    </p:selectOneMenu>
+                                </h:panelGrid>
+
+                                <p:panel header="Imagen" style="text-align: center">
+                                    <h:panelGrid columns="1">
+                                        <p:lightBox iframe="false" height="60" width="60"  id="lighbox2">  
+                                            <h:outputLink title="#{empleadoBean.empleado.descripcion}"
+                                                          value="#{FacesContext.getCurrentInstance().getExternalContext()}resources/imgempleados/#{empleadoBean.empleado.imagen}">
+                                                <h:graphicImage  name="/imgempleados/#{empleadoBean.empleado.imagen}"
+                                                                 alt="Sin Definir" height="100" width="100" />    
+                                            </h:outputLink>
+                                        </p:lightBox>
+                                        <p:commandButton value="Seleccione" onclick="PF('dialogoimgempleado').show()" 
+                                                         update=":frmimgempleado:codimag" icon="ui-icon-image"/>
+                                    </h:panelGrid>
+                                </p:panel>
+                            </h:panelGrid>
+                        </p:panel>
+                        <h:panelGrid columns="3" style="margin-left: 50px">
+                            <p:panel header="Stocks">
+                                <h:panelGrid columns="2">
+                                    <h:outputLabel value="Stock Actual" for="stockactual"/>
+                                    <p:inputText id="stockactual" value="#{empleadoBean.empleado.stockActual}" 
+                                                 style="text-align: right" size="10">
+                                        <f:convertNumber type="currency" currencySymbol="" maxFractionDigits="0" />
+                                    </p:inputText>
+                                    <h:outputLabel value="Strock Aviso" for="stockaviso"/>
+                                    <p:inputText id="stockaviso" value="#{empleadoBean.empleado.stockAviso}" 
+                                                 style="text-align: right" size="10" >
+                                        <f:convertNumber type="currency" currencySymbol="" maxFractionDigits="0" />
+                                    </p:inputText>                                
+                                    <h:outputLabel value="Strock Minimo" for="stockminimo"/>
+                                    <p:inputText id="stockminimo" value="#{empleadoBean.empleado.stockMinimo}" 
+                                                 style="text-align: right" size="10">
+                                        <f:convertNumber type="currency" currencySymbol="" maxFractionDigits="0" />
+                                    </p:inputText>
+                                </h:panelGrid>
+                            </p:panel>
+                            <p:panel header="Costes Relacionados">
+                                <h:panelGrid columns="2">
+                                    <h:outputLabel value="$ Costo" for="costo"/>
+                                    <p:inputText id="costo" value="#{empleadoBean.empleado.costo}"
+                                                 style="text-align: right" size="15">
+                                        <f:convertNumber type="currency" currencySymbol="$ " maxFractionDigits="0" />
+                                    </p:inputText>
+                                    <h:outputLabel value="Precio de Venta" for="precioventa"/>
+                                    <p:inputText id="precioventa" value="#{empleadoBean.empleado.precioVenta}" 
+                                                 style="text-align: right" size="15">
+                                        <p:ajax event="keyup" update="utilidad" process="@this,costo"/>
+                                        <f:convertNumber type="currency" currencySymbol="$ " maxFractionDigits="0" />
+                                    </p:inputText>                                
+                                    <h:outputLabel value="$ Utilidad" for="utilidad"/>
+                                    <p:inputText id="utilidad" value="#{empleadoBean.cp.utilidad(empleadoBean.empleado)}"
+                                                 style="text-align: right" size="15" disabled="true">
+                                        <f:convertNumber type="currency" currencySymbol="$ " maxFractionDigits="0" />
+                                    </p:inputText>
+                                </h:panelGrid>
+                            </p:panel>
+                            <p:panel header="Dimenciones y Peso">
+                                <h:panelGrid columns="2">
+                                    <h:outputLabel value="Ancho" for="ancho"/>
+                                    <p:inputText id="ancho" value="#{empleadoBean.empleado.ancho}"
+                                                 style="text-align: right" size="5"/>
+                                    <h:outputLabel value="Alto" for="alto"/>
+                                    <p:inputText id="alto" value="#{empleadoBean.empleado.alto}" 
+                                                 style="text-align: right" size="5"/>                                
+                                    <h:outputLabel value="Espesor" for="espesor"/>
+                                    <p:inputText id="espesor" value="#{empleadoBean.empleado.espesor}"
+                                                 style="text-align: right" size="5"/>
+                                    <h:outputLabel value="Peso en KG" for="peso"/>
+                                    <p:inputText id="peso" value="#{empleadoBean.empleado.peso}"
+                                                 style="text-align: right" size="5"/>
+                                </h:panelGrid>
+                            </p:panel>
+                        </h:panelGrid>
+
+                    </h:form>
+                </p:dialog>
+                <p:dialog header="Subir Imagen del Producto" widgetVar="dialogoimgempleado" modal="true">
+                    <h:form id="frmimgempleado" enctype="multipart/form-data">
+                        <h:panelGrid columns="3">
+                            <h:inputHidden id="codimag" value="#{empleadoBean.empleado.codigobarras}"/>
+                            <p:fileUpload id="txtAvatar" mode="simple" value="#{empleadoBean.imgempleado}"/>
+                            <p:commandButton value="Subir" icon="ui-icon-circle-arrow-n" ajax="false"
+                                             actionListener="#{empleadoBean.agregarimgempleado()}"/>
+                        </h:panelGrid>
+                    </h:form>
+                </p:dialog>
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>
