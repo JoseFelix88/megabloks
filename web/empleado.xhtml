@@ -122,32 +122,35 @@
                             <h:panelGrid style="margin-left: 20px" columns="2" id="pdataempleado">
 
                                 <h:panelGrid columns="2">
-                                    <h:outputLabel value="ID. Producto: " for="idempleado"/>
+                                    <h:outputLabel value="Tipo de Documento " for="idempleado"/>
+                                    <p:selectOneMenu id="categoria" value="#{empleadoBean.empleado.tipodocumento}" 
+                                                     converter="omnifaces.SelectItemsConverter" style="width: 180px">
+                                        <f:selectItem itemLabel="Seleccione"/>
+                                        <f:selectItem itemLabel="CEDULA DE CIUDADANIA"  itemValue="CC"/>
+                                        <f:selectItem itemLabel="CEDULA DE EXTRANJERIA"  itemValue="CE"/>
+                                        <f:selectItem itemLabel="PASAPORTE"  itemValue="PASAPORTE"/>
+                                    </p:selectOneMenu>
+                                    <p:outputLabel value="ID. Empleado" for="idempleado" />
                                     <p:inputText id="idempleado" value="#{empleadoBean.empleado.idempleados}" 
                                                  disabled="false" style="text-align: right" size="5"/> 
-                                    <h:outputLabel value="Codigo de Barras" for="codigobarras"/>
-                                    <p:inputText id="codigobarras" value="#{empleadoBean.empleado.codigobarras}"/>
-                                    <h:outputLabel value="Descripcion" for="descripcion" />
-                                    <p:inputTextarea id="descripcion" value="#{empleadoBean.empleado.descripcion}" 
-                                                     title="#{empleadoBean.empleado.descripcion}" style="width: 500px"/>
-                                    <p:outputLabel value="Categoria" for="categoria" />
-                                    <p:selectOneMenu id="categoria" value="#{empleadoBean.empleado.categoria.idcategorias}" required="true" 
-                                                     requiredMessage="Selecciona una Categoria por favor. Gracias!"
-                                                     converter="omnifaces.SelectItemsConverter" style="width: 180px">
-                                        <f:selectItem itemLabel="Seleccione"  itemValue="#{categoriaItem.idcategorias}"/>
-                                        <f:selectItems value="#{empleadoBean.listcategoria}"
-                                                       var="categoriaItem"
-                                                       itemValue="#{categoriaItem.idcategorias}"
-                                                       itemLabel="#{categoriaItem.descripcion}"/>
-                                    </p:selectOneMenu>
+                                    <h:panelGrid columns="4">
+                                        <h:outputLabel value="Primer Apellido" for="ape1"/>
+                                        <p:inputText id="ape1" value="#{empleadoBean.empleado.apellido1}"/>
+                                        <h:outputLabel value="Segundo Apellido" for="ape2" />
+                                        <p:inputText id="ape2" value="#{empleadoBean.empleado.apellido2}" />
+                                        <h:outputLabel value="Primer Nombre" for="nom1"/>
+                                        <p:inputText id="ape1" value="#{empleadoBean.empleado.nombre1}"/>
+                                        <h:outputLabel value="Segundo Nombre" for="nom2" />
+                                        <p:inputText id="ape2" value="#{empleadoBean.empleado.nombre2}" />
+                                    </h:panelGrid>
                                 </h:panelGrid>
 
-                                <p:panel header="Imagen" style="text-align: center">
+                                <p:panel header="Foto" style="text-align: center">
                                     <h:panelGrid columns="1">
                                         <p:lightBox iframe="false" height="60" width="60"  id="lighbox2">  
-                                            <h:outputLink title="#{empleadoBean.empleado.descripcion}"
-                                                          value="#{FacesContext.getCurrentInstance().getExternalContext()}resources/imgempleados/#{empleadoBean.empleado.imagen}">
-                                                <h:graphicImage  name="/imgempleados/#{empleadoBean.empleado.imagen}"
+                                            <h:outputLink title="#{empleadoBean.empleado.nombre1} #{empleadoBean.empleado.apellido1}"
+                                                          value="#{FacesContext.getCurrentInstance().getExternalContext()}resources/empleados/#{empleadoBean.empleado.idempleados}/#{empleadoBean.empleado.foto}">
+                                                <h:graphicImage  name="/empleados/#{empleadoBean.empleado.idempleados}/#{empleadoBean.empleado.foto}"
                                                                  alt="Sin Definir" height="100" width="100" />    
                                             </h:outputLink>
                                         </p:lightBox>
