@@ -42,7 +42,7 @@ public class Utilidades implements Serializable {
      public  boolean crearDirecctorio(String urlOrigen, String nombreCarpeta){
          File ruta = new File(urlOrigen);
          
-         System.out.println("ruta: "+ruta.getPath());
+         
          if (ruta.isDirectory()) {
              File nuevaruta = new File(ruta.getPath()+"/"+nombreCarpeta);
              nuevaruta.mkdirs();

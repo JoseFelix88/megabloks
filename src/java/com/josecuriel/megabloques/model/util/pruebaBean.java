@@ -21,17 +21,14 @@ public class pruebaBean {
         /*ServletContext servletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
         realPath = (String) servletContext.getRealPath("/"); // Sustituye "/" por el directorio ej: "/upload"
         System.out.println(realPath);*/
-        Utilidades util = new Utilidades();
-
-        System.out.println(util.crearDirecctorio("c://rips",
-                "Empleados/1102819530"));
-        /* EmpleadoDAO emdao = new EmpleadoDAO();
-        System.out.println("idempleado: "+emdao.read(1102819530).getIdempleados());
+        
+         EmpleadoDAO emdao = new EmpleadoDAO();
+        System.out.println("idempleado: "+emdao.read(1102819530).getTipodocumento());
         List<Empleados> lis = emdao.readAll();
         for (Empleados li : lis) {
-            System.out.println("empleado: "+li.getApellido1());
+            System.out.println("empleado: "+li.getTipodocumento());
         }
-        ProductoDAO dAO = new ProductoDAO();
+       /* ProductoDAO dAO = new ProductoDAO();
 
         List<Producto>l = dAO.readAll();
         for (Producto l1 : l) {

@@ -33,7 +33,7 @@
                                 <h:outputText value="Buscar Por: " />
                                 <p:inputText  id="globalFilter" onkeyup="PF('wgtable').filter()"
                                               style="width:300px; margin-left: 10px" 
-                                              placeholder="ID, Nombre y Apellidos o Cargo"/>
+                                              placeholder="No de Identidad o Nombre y Apellidos"/>
                             </p:outputPanel>
                         </f:facet>
 
@@ -41,25 +41,27 @@
                                 oncomplete="PF('wgdlempleado').show()" 
                                 update="frmlista:msj,:frmempleado" />
 
-                        <p:column headerText="Foto" width="60">
+                        <p:column headerText="Foto" width="20">
                             <p:lightBox iframe="false" height="60" width="60"  id="lighbox1">  
                                 <h:outputLink title="#{empleado.apellido1} #{empleado.nombre1}"
-                                              value="#{FacesContext.getCurrentInstance().getExternalContext()}resources/empleados/#{empleado.foto}">
-                                    <h:graphicImage  name="/empleados/#{empleado.foto}" alt="sin definir" height="60" width="60" />    
+                                              value="#{FacesContext.getCurrentInstance().getExternalContext()}resources/empleados/#{empleado.idempleados}/#{empleado.foto}">
+                                    <h:graphicImage  name="/empleados/#{empleado.idempleados}/#{empleado.foto}" alt="Sin definir" height="60" width="60" />    
                                 </h:outputLink>
                             </p:lightBox>
                         </p:column>
-                        <p:column headerText="Tipo Documento y ID">
-                            <h:outputText value="#{empleado.tipodocumento} - #{empleado.idempleados}" />
+                        
+                        <p:column filterBy="#{empleado.idempleados}" filterMatchMode="contains"
+                                  headerText="No. de Identidad" width="80">
+                            <h:outputText value="#{empleado.idempleados}" />
                         </p:column>
                         <p:column filterBy="#{empleado.apellido1} #{empleado.apellido2} #{empleado.nombre1} #{empleado.nombre2}" 
-                                  headerText="Nombres y Apellidos" width="200">
+                                  headerText="Nombres y Apellidos" width="150" filterMatchMode="contains">
                             <h:outputText value="#{empleado.apellido1} #{empleado.apellido2} #{empleado.nombre1} #{empleado.nombre2}" />
                         </p:column>
-                        <p:column filterBy="#{empleado.cargo} - #{empleado.departamento}" headerText="Cargo y Departamento" width="100">
+                        <p:column  headerText="Cargo y Departamento" width="100">
                             <h:outputText value="#{empleado.cargo} - #{empleado.departamento}" />
                         </p:column>
-                        <p:column headerText="Salario Base">
+                        <p:column headerText="Salario Base" width="50" style="text-align: right">
                             <h:outputText value="#{empleado.sueldobase}" >
                                 <f:convertNumber type="currency" currencySymbol="$ " maxFractionDigits="0" />
                             </h:outputText>
@@ -134,7 +136,7 @@
                                     <p:outputLabel value="ID. Empleado" for="idempleado" />
                                     <p:inputText id="idempleado" value="#{empleadoBean.empleado.idempleados}" 
                                                  disabled="false" style="text-align: right">
-                                        <p:ajax event="keyup" update="idacceso" process="@this,idempleado"/>
+                                        <p:ajax event="keyup" update="idacceso"/>
                                     </p:inputText>
 
                                     <h:outputLabel value="Primer Apellido" for="ape1"/>
@@ -231,7 +233,7 @@
                                     <h:outputLabel value="Fecha de Salida" for="Fsalida"/>
                                     <p:calendar id="Fsalida" value="#{empleadoBean.empleado.fechasalida}" disabled="true" size="10"/>
                                     <h:outputLabel value="Estado" for="estado"/>
-                                    <p:inputText id="estado" value="#{empleadoBean.empleado.estado}" size="5"/>
+                                    <p:inputText id="estado" rendered="#{empleadoBean.empleado.estado}" value="#{empleadoBean.empleado.estado}" label="dasdasd" size="5"/>
                                 </h:panelGrid>
                                 <p:commandButton value="Tomar Huella Digital"  />
                             </p:panel>

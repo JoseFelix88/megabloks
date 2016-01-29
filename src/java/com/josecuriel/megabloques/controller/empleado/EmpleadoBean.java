@@ -3,6 +3,7 @@ package com.josecuriel.megabloques.controller.empleado;
 import com.josecuriel.megabloques.model.empleado.EmpleadoDAO;
 import com.josecuriel.megabloques.model.empleado.Empleados;
 import com.josecuriel.megabloques.model.producto.Producto;
+import com.josecuriel.megabloques.model.util.Utilidades;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,6 +13,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
+import javax.servlet.ServletContext;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.model.UploadedFile;
 
@@ -126,8 +128,13 @@ public class EmpleadoBean implements Serializable {
     public void setFotoEmpleado(UploadedFile fotoEmpleado) {
         this.fotoEmpleado = fotoEmpleado;
     }
-    
-    public void agregarFotoEmpleado(ActionEvent event){
-        
+
+    public void agregarFotoEmpleado(ActionEvent event) {
+
+        Utilidades util = new Utilidades();
+        ServletContext servletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
+        String realPath = (String) servletContext.getRealPath("/resources/empleados");
+        util.crearDirecctorio(realPath, ""+empleado.getIdempleados());
+        System.out.println(realPath);
     }
 }

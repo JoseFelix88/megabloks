@@ -22,10 +22,10 @@ public class EmpleadoDAO extends database implements CRUD<Empleados> {
             ps = getConnection().prepareStatement(sql);
             ps.setInt(1, c.getIdempleados());
             ps.setString(2, c.getTipodocumento());
-            ps.setString(3, c.getNombre1());
-            ps.setString(4, c.getNombre2());
-            ps.setString(5, c.getApellido1());
-            ps.setString(6, c.getApellido2());
+            ps.setString(3, c.getNombre1().toUpperCase());
+            ps.setString(4, c.getNombre2().toUpperCase());
+            ps.setString(5, c.getApellido1().toUpperCase());
+            ps.setString(6, c.getApellido2().toUpperCase());
             ps.setString(7, c.getTelefono());
             ps.setString(8, c.getDireccion());
             ps.setString(9, c.getEmail());
@@ -58,10 +58,10 @@ public class EmpleadoDAO extends database implements CRUD<Empleados> {
         try {
             ps = getConnection().prepareStatement(sql);
             ps.setString(1, c.getTipodocumento());
-            ps.setString(2, c.getNombre1());
-            ps.setString(3, c.getNombre2());
-            ps.setString(4, c.getApellido1());
-            ps.setString(5, c.getApellido2());
+            ps.setString(2, c.getNombre1().toUpperCase());
+            ps.setString(3, c.getNombre2().toUpperCase());
+            ps.setString(4, c.getApellido1().toUpperCase());
+            ps.setString(5, c.getApellido2().toUpperCase());
             ps.setString(6, c.getTelefono());
             ps.setString(7, c.getDireccion());
             ps.setString(8, c.getEmail());
@@ -98,6 +98,7 @@ public class EmpleadoDAO extends database implements CRUD<Empleados> {
             rs = ps.executeQuery();
             if (rs.next()) {
                 empleado = new Empleados();
+                empleado.setTipodocumento(rs.getString("tipodocumento"));
                 empleado.setIdempleados(rs.getInt("idempleados"));
                 empleado.setNombre1(rs.getString("nombre1"));
                 empleado.setNombre2(rs.getString("nombre2"));
@@ -117,7 +118,7 @@ public class EmpleadoDAO extends database implements CRUD<Empleados> {
                 empleado.setContrasenia(rs.getString("clave"));
             }
         } catch (SQLException e) {
-            System.out.println("error en el momento de la consulta "+e);
+            System.out.println("error en el momento de la consulta " + e);
         } catch (NumberFormatException e) {
         }
 
@@ -135,13 +136,12 @@ public class EmpleadoDAO extends database implements CRUD<Empleados> {
                 + "empleados.fechaingreso, empleados.fechasalida, empleados.estado, md5(empleados.`contraseña`) as clave, empleados.huella\n"
                 + "FROM empleados ";
         ResultSet rs;
-
-        System.out.println(sql);
         try {
             ps = getConnection().prepareStatement(sql);
             rs = ps.executeQuery();
             while (rs.next()) {
                 empleado = new Empleados();
+                empleado.setTipodocumento(rs.getString("tipodocumento"));
                 empleado.setIdempleados(rs.getInt("idempleados"));
                 empleado.setNombre1(rs.getString("nombre1"));
                 empleado.setNombre2(rs.getString("nombre2"));
@@ -159,13 +159,13 @@ public class EmpleadoDAO extends database implements CRUD<Empleados> {
                 empleado.setFechasalida(rs.getDate("fechasalida"));
                 empleado.setEstado(rs.getBoolean("estado"));
                 empleado.setContrasenia(rs.getString("clave"));
-                
+
                 list.add(empleado);
             }
         } catch (SQLException | NumberFormatException e) {
-            System.out.println("error al momento de llenar la lista de empleados: "+e);
+            System.out.println("error al momento de llenar la lista de empleados: " + e);
         }
-        
+
         return list;
     }
 
