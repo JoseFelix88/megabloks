@@ -4,6 +4,7 @@ import com.josecuriel.megabloques.model.empleado.EmpleadoDAO;
 import com.josecuriel.megabloques.model.empleado.Empleados;
 import com.josecuriel.megabloques.model.producto.Producto;
 import com.josecuriel.megabloques.model.util.Utilidades;
+import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -135,11 +136,15 @@ public class EmpleadoBean implements Serializable {
         Utilidades util = new Utilidades();
         ServletContext servletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
         String realPath = (String) servletContext.getRealPath("/resources/empleados");
-        boolean directorio = util.crearDirecctorio(realPath, String.valueOf(empleado.getIdempleados()));
         String urlempleado = realPath.concat("/").concat(String.valueOf(empleado.getIdempleados()).concat("/"));
-        System.out.println(urlempleado+directorio);
+        File f = new File(urlempleado);
+        if (f.isDirectory() != true) {
+            System.out.println("ruta- "+f.getPath()+" es una ruta: "+f.isAbsolute());
+            return;
+        }
+        boolean directorio = util.crearDirecctorio(realPath, String.valueOf(empleado.getIdempleados()));
+        System.out.println(urlempleado + directorio);
 
-        
         if (directorio == false) {
 
             util.lanzarMSJ(FacesContext.getCurrentInstance(), 1, "FOLDER PARA EL EMPLEADO " + empleado.getApellido1() + ""
@@ -154,7 +159,7 @@ public class EmpleadoBean implements Serializable {
                     FacesContext.getCurrentInstance());
         }
         String tipoarchivo = fotoEmpleado.getContentType().replace("image/", ".");
-        dAO.asignarFotoEmpleado( String.valueOf(empleado.getIdempleados()).concat(tipoarchivo),
+        dAO.asignarFotoEmpleado(String.valueOf(empleado.getIdempleados()).concat(tipoarchivo),
                 String.valueOf(empleado.getIdempleados()));
     }
 }
