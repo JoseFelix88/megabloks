@@ -56,7 +56,7 @@ public class Generador_de_Codigos {
 
         String codigoAleatorio = "";
 
-        for (int i = 0; i < 7; i++) {
+        for (int i = 0; i < 8; i++) {
 
             if (i % 2 == 0) {
                 codigoAleatorio = (codigoAleatorio + this.getAleatorionNumeros(0, 9));

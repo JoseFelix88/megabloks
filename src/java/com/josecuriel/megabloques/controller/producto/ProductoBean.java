@@ -160,7 +160,7 @@ public class ProductoBean implements Serializable {
      --REFERENTE A LA CARGA DE UNA IMAGEN A UNA CARPETA DEL SERVIDOR HACIDO TOMADO DE LA ENTRADA DEL BLOG:
      --http://todoenjava.blogspot.com.co/2014/06/jsf-appagenda-parte-24-subir-imagen-al.html*/
     public void agregarimgproducto() throws IOException {
-        System.out.println(productoDAO.CodigoProducto(producto.getCodigobarras()) );
+        
         if (productoDAO.CodigoProducto(producto.getCodigobarras()) != true) {
             
             InputStream inputStream = null;
@@ -213,7 +213,7 @@ public class ProductoBean implements Serializable {
             }
         } else {
             
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_FATAL,
                     null, "La Imagen del Producto NO! hasido Subida por que el producto aun no seá Registrado."));
         }
     }

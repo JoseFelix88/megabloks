@@ -17,7 +17,7 @@
             <ui:define name="content">
 
                 <h:form id="frmlista">
-                    <p:growl id="msj" autoUpdate="false" showDetail="true" showSummary="false" />
+                    <p:growl id="msj" autoUpdate="false" life="35000" showDetail="true" showSummary="false" />
                     <p:dataTable id="tbempleado" var="empleado" value="#{empleadoBean.listEmpleados}" widgetVar="wgtable"
                                  filteredValue="#{empleadoBean.filtrolistEmpleados}" 
                                  style="font-family: verdana; font-size: 11px" rowKey="#{empleado.idempleados}"

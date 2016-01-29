@@ -89,7 +89,7 @@ public class EmpleadoDAO extends database implements CRUD<Empleados> {
                 + "empleados.apellido1, empleados.apellido2, empleados.telefono, empleados.direccion, empleados.email,\n"
                 + "empleados.cargo, empleados.departamento, empleados.tipocontrato, empleados.formapago, empleados.sueldobase,\n"
                 + "empleados.fechaingreso, empleados.fechasalida, empleados.estado, md5(empleados.`contraseña`) as clave, empleados.huella\n"
-                + "FROM empleados WHERE idempleados = ?";
+                + ", empleados.foto FROM empleados WHERE idempleados = ?";
         ResultSet rs;
 
         try {
@@ -113,9 +113,10 @@ public class EmpleadoDAO extends database implements CRUD<Empleados> {
                 empleado.setFormapago(rs.getString("formapago"));
                 empleado.setSueldobase(rs.getInt("sueldobase"));
                 empleado.setFechaingreso(rs.getDate("fechaingreso"));
-//                empleado.setFechasalida(rs.getDate("fechasalida"));
+                empleado.setFechasalida(rs.getDate("fechasalida"));
                 empleado.setEstado(rs.getBoolean("estado"));
                 empleado.setContrasenia(rs.getString("clave"));
+                empleado.setFoto(rs.getString("foto"));
             }
         } catch (SQLException e) {
             System.out.println("error en el momento de la consulta " + e);
@@ -134,7 +135,7 @@ public class EmpleadoDAO extends database implements CRUD<Empleados> {
                 + "empleados.apellido1, empleados.apellido2, empleados.telefono, empleados.direccion, empleados.email,\n"
                 + "empleados.cargo, empleados.departamento, empleados.tipocontrato, empleados.formapago, empleados.sueldobase,\n"
                 + "empleados.fechaingreso, empleados.fechasalida, empleados.estado, md5(empleados.`contraseña`) as clave, empleados.huella\n"
-                + "FROM empleados ";
+                + ", empleados.foto FROM empleados ";
         ResultSet rs;
         try {
             ps = getConnection().prepareStatement(sql);
@@ -159,6 +160,7 @@ public class EmpleadoDAO extends database implements CRUD<Empleados> {
                 empleado.setFechasalida(rs.getDate("fechasalida"));
                 empleado.setEstado(rs.getBoolean("estado"));
                 empleado.setContrasenia(rs.getString("clave"));
+                empleado.setFoto(rs.getString("foto"));
 
                 list.add(empleado);
             }
@@ -167,6 +169,10 @@ public class EmpleadoDAO extends database implements CRUD<Empleados> {
         }
 
         return list;
+    }
+    
+    public boolean asignarFotoEmpleado(String foto, String idempleado){
+        return update("empleados", "foto = '"+foto+"'", "idempleados = '"+idempleado+"'");
     }
 
 }

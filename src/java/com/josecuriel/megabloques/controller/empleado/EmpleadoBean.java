@@ -4,6 +4,7 @@ import com.josecuriel.megabloques.model.empleado.EmpleadoDAO;
 import com.josecuriel.megabloques.model.empleado.Empleados;
 import com.josecuriel.megabloques.model.producto.Producto;
 import com.josecuriel.megabloques.model.util.Utilidades;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -129,12 +130,31 @@ public class EmpleadoBean implements Serializable {
         this.fotoEmpleado = fotoEmpleado;
     }
 
-    public void agregarFotoEmpleado(ActionEvent event) {
+    public void agregarFotoEmpleado(ActionEvent event) throws IOException {
 
         Utilidades util = new Utilidades();
         ServletContext servletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
         String realPath = (String) servletContext.getRealPath("/resources/empleados");
-        util.crearDirecctorio(realPath, ""+empleado.getIdempleados());
-        System.out.println(realPath);
+        boolean directorio = util.crearDirecctorio(realPath, String.valueOf(empleado.getIdempleados()));
+        String urlempleado = realPath.concat("/").concat(String.valueOf(empleado.getIdempleados()).concat("/"));
+        System.out.println(urlempleado+directorio);
+
+        
+        if (directorio == false) {
+
+            util.lanzarMSJ(FacesContext.getCurrentInstance(), 1, "FOLDER PARA EL EMPLEADO " + empleado.getApellido1() + ""
+                    + " " + empleado.getNombre1() + " CREADO CORRECTAMENTE.");
+
+            util.agregarImagen(fotoEmpleado, urlempleado, String.valueOf(empleado.getIdempleados()),
+                    FacesContext.getCurrentInstance());
+
+        } else {
+            util.crearDirecctorio(realPath, String.valueOf(empleado.getIdempleados()));
+            util.agregarImagen(fotoEmpleado, urlempleado, String.valueOf(empleado.getIdempleados()),
+                    FacesContext.getCurrentInstance());
+        }
+        String tipoarchivo = fotoEmpleado.getContentType().replace("image/", ".");
+        dAO.asignarFotoEmpleado( String.valueOf(empleado.getIdempleados()).concat(tipoarchivo),
+                String.valueOf(empleado.getIdempleados()));
     }
 }
