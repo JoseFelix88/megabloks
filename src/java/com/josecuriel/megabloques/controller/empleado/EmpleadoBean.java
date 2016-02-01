@@ -138,26 +138,26 @@ public class EmpleadoBean implements Serializable {
         String realPath = (String) servletContext.getRealPath("/resources/empleados");
         String urlempleado = realPath.concat("/").concat(String.valueOf(empleado.getIdempleados()).concat("/"));
         File f = new File(urlempleado);
-        if (f.isDirectory() != true) {
-            System.out.println("ruta- "+f.getPath()+" es una ruta: "+f.isAbsolute());
-            return;
-        }
-        boolean directorio = util.crearDirecctorio(realPath, String.valueOf(empleado.getIdempleados()));
-        System.out.println(urlempleado + directorio);
+        if (f.isDirectory() == true) {
+            System.out.println("ruta- " + f.getPath() + " es una ruta: " + f.isAbsolute());
+            util.agregarImagen(fotoEmpleado, urlempleado, String.valueOf(empleado.getIdempleados()),
+                    FacesContext.getCurrentInstance());
 
-        if (directorio == false) {
+            String tipoarchivo = fotoEmpleado.getContentType().replace("image/", ".");
+            dAO.asignarFotoEmpleado(String.valueOf(empleado.getIdempleados()).concat(tipoarchivo),
+                    String.valueOf(empleado.getIdempleados()));
+
+        } else {
+            util.crearDirecctorio(urlempleado,
+                    String.valueOf(empleado.getIdempleados()));
 
             util.lanzarMSJ(FacesContext.getCurrentInstance(), 1, "FOLDER PARA EL EMPLEADO " + empleado.getApellido1() + ""
                     + " " + empleado.getNombre1() + " CREADO CORRECTAMENTE.");
 
             util.agregarImagen(fotoEmpleado, urlempleado, String.valueOf(empleado.getIdempleados()),
                     FacesContext.getCurrentInstance());
-
-        } else {
-            util.crearDirecctorio(realPath, String.valueOf(empleado.getIdempleados()));
-            util.agregarImagen(fotoEmpleado, urlempleado, String.valueOf(empleado.getIdempleados()),
-                    FacesContext.getCurrentInstance());
         }
+
         String tipoarchivo = fotoEmpleado.getContentType().replace("image/", ".");
         dAO.asignarFotoEmpleado(String.valueOf(empleado.getIdempleados()).concat(tipoarchivo),
                 String.valueOf(empleado.getIdempleados()));
