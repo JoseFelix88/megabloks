@@ -7,7 +7,9 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.servlet.ServletContext;
@@ -23,6 +25,22 @@ public class Utilidades implements Serializable {
 
             String fechaConFormato = formato.format(fecha);
 
+            return fechaConFormato;
+
+        } catch (Exception er) {
+        }
+
+        return null;
+    }
+    
+    public Date formatearFecha(String fecha) {
+
+        try {
+
+            SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
+
+            Date fechaConFormato = formato.parse(fecha);
+             
             return fechaConFormato;
 
         } catch (Exception er) {

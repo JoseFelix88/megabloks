@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 
 package com.josecuriel.megabloques.model.empleado;
 
@@ -16,7 +11,7 @@ public class Empleados implements Serializable {
     private byte[] huella;
     private static final long serialVersionUID = 1L;
     
-    private Integer idempleados;
+    private int idempleados;
     
     private String tipodocumento;
     
@@ -42,13 +37,13 @@ public class Empleados implements Serializable {
     
     private String formapago;
    
-    private Integer sueldobase;
+    private int sueldobase;
     
     private Date fechaingreso;
     
     private Date fechasalida;
     
-    private Boolean estado;
+    private boolean estado;
     
     private String foto;
     
@@ -58,15 +53,15 @@ public class Empleados implements Serializable {
     public Empleados() {
     }
 
-    public Empleados(Integer idempleados) {
+    public Empleados(int idempleados) {
         this.idempleados = idempleados;
     }
 
-    public Integer getIdempleados() {
+    public int getIdempleados() {
         return idempleados;
     }
 
-    public void setIdempleados(Integer idempleados) {
+    public void setIdempleados(int idempleados) {
         this.idempleados = idempleados;
     }
 
@@ -166,11 +161,11 @@ public class Empleados implements Serializable {
         this.formapago = formapago;
     }
 
-    public Integer getSueldobase() {
+    public int getSueldobase() {
         return sueldobase;
     }
 
-    public void setSueldobase(Integer sueldobase) {
+    public void setSueldobase(int sueldobase) {
         this.sueldobase = sueldobase;
     }
 
@@ -207,7 +202,7 @@ public class Empleados implements Serializable {
         this.operadorproduccionList = operadorproduccionList;
     }
 
-    @Override
+    /*@Override
     public int hashCode() {
         int hash = 0;
         hash += (idempleados != null ? idempleados.hashCode() : 0);
@@ -231,7 +226,7 @@ public class Empleados implements Serializable {
     public String toString() {
         return "com.josecuriel.megabloques.model.produccion.Empleados[ idempleados=" + idempleados + " ]";
     }
-
+*/
     public byte[] getHuella() {
         return huella;
     }
