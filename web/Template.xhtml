@@ -35,7 +35,8 @@
                                             icon="ui-icon-print" url="#" />
                             </p:submenu>
                             <p:submenu label="Fabricacion">
-                                <p:menuitem value="Gestionar Produccion" ajax="false" outcome="Produccion" icon="ui-icon-cart"/>
+                                <p:menuitem value="Gestionar Produccion" ajax="false" outcome="Produccion" 
+                                            icon="#{FacesContext.getCurrentInstance().getExternalContext()}resources/iconos/planilla.png"/>
                             </p:submenu>
                             <p:submenu label="Produccion">
                                 <p:menuitem value="Gestionar" ajax="false" icon="ui-icon-calculator"/>
