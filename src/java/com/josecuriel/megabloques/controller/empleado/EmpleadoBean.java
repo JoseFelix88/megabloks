@@ -27,7 +27,7 @@ public class EmpleadoBean implements Serializable {
     private Empleados empleado;
     private List<Empleados> listEmpleados, filtrolistEmpleados;
     EmpleadoDAO dAO;
-
+    Utilidades util = new Utilidades();
     private UploadedFile fotoEmpleado;
 
     @PostConstruct
@@ -133,7 +133,6 @@ public class EmpleadoBean implements Serializable {
 
     public void agregarFotoEmpleado(ActionEvent event) throws IOException {
 
-        Utilidades util = new Utilidades();
         ServletContext servletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
         String realPath = (String) servletContext.getRealPath("/resources/empleados");
         String urlempleado = realPath.concat("/").concat(String.valueOf(empleado.getIdempleados()).concat("/"));
@@ -161,5 +160,14 @@ public class EmpleadoBean implements Serializable {
         String tipoarchivo = fotoEmpleado.getContentType().replace("image/", ".");
         dAO.asignarFotoEmpleado(String.valueOf(empleado.getIdempleados()).concat(tipoarchivo),
                 String.valueOf(empleado.getIdempleados()));
+    }
+
+    public boolean verificarEmpleado(ActionEvent event) {
+        if (dAO.read(empleado.getIdempleados()) == null) {
+            //util.lanzarMSJ(FacesContext.getCurrentInstance(), 2, "POR FAVOR PRIMERO REGISTRA EL EMPLEADO.");
+            return false;
+        }
+        
+        return true;
     }
 }

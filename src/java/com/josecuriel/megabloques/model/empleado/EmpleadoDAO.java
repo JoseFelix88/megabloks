@@ -93,30 +93,33 @@ public class EmpleadoDAO extends database implements CRUD<Empleados> {
         ResultSet rs;
 
         try {
-            ps = getConnection().prepareStatement(sql);
-            ps.setInt(1, Integer.parseInt(key.toString()));
-            rs = ps.executeQuery();
-            if (rs.next()) {
-                empleado = new Empleados();
-                empleado.setTipodocumento(rs.getString("tipodocumento"));
-                empleado.setIdempleados(rs.getInt("idempleados"));
-                empleado.setNombre1(rs.getString("nombre1"));
-                empleado.setNombre2(rs.getString("nombre2"));
-                empleado.setApellido1(rs.getString("apellido1"));
-                empleado.setApellido2(rs.getString("apellido2"));
-                empleado.setTelefono(rs.getString("telefono"));
-                empleado.setDireccion(rs.getString("direccion"));
-                empleado.setEmail(rs.getString("email"));
-                empleado.setCargo(rs.getString("cargo"));
-                empleado.setDepartamento(rs.getString("departamento"));
-                empleado.setTipocontrato(rs.getString("tipocontrato"));
-                empleado.setFormapago(rs.getString("formapago"));
-                empleado.setSueldobase(rs.getInt("sueldobase"));
-                empleado.setFechaingreso(rs.getDate("fechaingreso"));
-                empleado.setFechasalida(rs.getDate("fechasalida"));
-                empleado.setEstado(rs.getBoolean("estado"));
-                empleado.setContrasenia(rs.getString("clave"));
-                empleado.setFoto(rs.getString("foto"));
+            if (key != null) {
+               
+                ps = getConnection().prepareStatement(sql);
+                ps.setInt(1, Integer.parseInt(key.toString()));
+                rs = ps.executeQuery();
+                if (rs.next()) {
+                    empleado = new Empleados();
+                    empleado.setTipodocumento(rs.getString("tipodocumento"));
+                    empleado.setIdempleados(rs.getInt("idempleados"));
+                    empleado.setNombre1(rs.getString("nombre1"));
+                    empleado.setNombre2(rs.getString("nombre2"));
+                    empleado.setApellido1(rs.getString("apellido1"));
+                    empleado.setApellido2(rs.getString("apellido2"));
+                    empleado.setTelefono(rs.getString("telefono"));
+                    empleado.setDireccion(rs.getString("direccion"));
+                    empleado.setEmail(rs.getString("email"));
+                    empleado.setCargo(rs.getString("cargo"));
+                    empleado.setDepartamento(rs.getString("departamento"));
+                    empleado.setTipocontrato(rs.getString("tipocontrato"));
+                    empleado.setFormapago(rs.getString("formapago"));
+                    empleado.setSueldobase(rs.getInt("sueldobase"));
+                    empleado.setFechaingreso(rs.getDate("fechaingreso"));
+                    empleado.setFechasalida(rs.getDate("fechasalida"));
+                    empleado.setEstado(rs.getBoolean("estado"));
+                    empleado.setContrasenia(rs.getString("clave"));
+                    empleado.setFoto(rs.getString("foto"));
+                }
             }
         } catch (SQLException e) {
             System.out.println("error en el momento de la consulta " + e);
@@ -170,9 +173,9 @@ public class EmpleadoDAO extends database implements CRUD<Empleados> {
 
         return list;
     }
-    
-    public boolean asignarFotoEmpleado(String foto, String idempleado){
-        return update("empleados", "foto = '"+foto+"'", "idempleados = '"+idempleado+"'");
+
+    public boolean asignarFotoEmpleado(String foto, String idempleado) {
+        return update("empleados", "foto = '" + foto + "'", "idempleados = '" + idempleado + "'");
     }
 
 }
