@@ -27,17 +27,15 @@
                         <p:menu toggleable="false" >
                             <p:menuitem value="Inicio" outcome="index" icon="ui-icon-home"/>
                             <p:submenu label="Productos">
-                                <p:menuitem value="Ver productos" outcome="producto" icon="ui-icon-clipboard" />
-                                <p:submenu label="Informes" icon="ui-icon-folder-open">
-                                    <p:menuitem value="Listado de Existencias" 
-                                                icon="ui-icon-print" url="#" />
-                                    <p:separator />
-                                    <p:menuitem value="Listado de Precios" 
-                                                icon="ui-icon-print" url="#" />
-                                </p:submenu>
+                                <p:menuitem value="Gestionar Productos" outcome="producto" icon="ui-icon-clipboard" />
+
                             </p:submenu>
-                            <p:submenu label="Compras de Insumos">
-                                <p:menuitem value="Ingresar Compras" ajax="false" icon="ui-icon-cart"/>
+                            <p:submenu label="Informes" icon="ui-icon-folder-open">
+                                <p:menuitem value="Central de Informes" 
+                                            icon="ui-icon-print" url="#" />
+                            </p:submenu>
+                            <p:submenu label="Fabricacion">
+                                <p:menuitem value="Gestionar Produccion" ajax="false" outcome="Produccion" icon="ui-icon-cart"/>
                             </p:submenu>
                             <p:submenu label="Produccion">
                                 <p:menuitem value="Gestionar" ajax="false" icon="ui-icon-calculator"/>
