@@ -8,7 +8,7 @@ package com.josecuriel.megabloques.model.produccion;
 
 import com.josecuriel.megabloques.model.producto.Producto;
 import java.io.Serializable;
-import java.math.BigInteger;
+
 import java.util.Date;
 import java.util.List;
  
@@ -18,10 +18,12 @@ public class Producciones implements Serializable {
     private static final long serialVersionUID = 1L;
     
     protected ProduccionesPK produccionesPK;
-     
+    
+    private int idproduccion;
+    
     private Date fechaemision;
      
-    private BigInteger costototal;
+    private long costototal;
     
     private Date horainicio;
      
@@ -29,9 +31,15 @@ public class Producciones implements Serializable {
     
     private String numerolote;
      
-    private Integer cantidadproducida;
+    private int cantidadproducida;
    
+    private int estado;
+    
     private Producto productos;
+    
+    private Detalleproduccion detalleproduccion;
+    
+    private Operadorproduccion operadorproduccion;
     
     private List<Detalleproduccion> detalleproduccionList;
      
@@ -64,11 +72,11 @@ public class Producciones implements Serializable {
         this.fechaemision = fechaemision;
     }
 
-    public BigInteger getCostototal() {
+    public long getCostototal() {
         return costototal;
     }
 
-    public void setCostototal(BigInteger costototal) {
+    public void setCostototal(long costototal) {
         this.costototal = costototal;
     }
 
@@ -96,11 +104,11 @@ public class Producciones implements Serializable {
         this.numerolote = numerolote;
     }
 
-    public Integer getCantidadproducida() {
+    public int getCantidadproducida() {
         return cantidadproducida;
     }
 
-    public void setCantidadproducida(Integer cantidadproducida) {
+    public void setCantidadproducida(int cantidadproducida) {
         this.cantidadproducida = cantidadproducida;
     }
 
@@ -153,6 +161,38 @@ public class Producciones implements Serializable {
     @Override
     public String toString() {
         return "com.josecuriel.megabloques.model.produccion.Producciones[ produccionesPK=" + produccionesPK + " ]";
+    }
+
+    public int getIdproduccion() {
+        return idproduccion;
+    }
+
+    public void setIdproduccion(int idproduccion) {
+        this.idproduccion = idproduccion;
+    }
+
+    public int getEstado() {
+        return estado;
+    }
+
+    public void setEstado(int estado) {
+        this.estado = estado;
+    }
+
+    public Detalleproduccion getDetalleproduccion() {
+        return detalleproduccion;
+    }
+
+    public void setDetalleproduccion(Detalleproduccion detalleproduccion) {
+        this.detalleproduccion = detalleproduccion;
+    }
+
+    public Operadorproduccion getOperadorproduccion() {
+        return operadorproduccion;
+    }
+
+    public void setOperadorproduccion(Operadorproduccion operadorproduccion) {
+        this.operadorproduccion = operadorproduccion;
     }
     
 }
