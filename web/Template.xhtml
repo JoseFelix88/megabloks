@@ -30,22 +30,21 @@
                                 <p:menuitem value="Gestionar Productos" outcome="producto" icon="ui-icon-clipboard" />
 
                             </p:submenu>
-                            <p:submenu label="Informes" icon="ui-icon-folder-open">
-                                <p:menuitem value="Central de Informes" 
-                                            icon="ui-icon-print" url="#" />
-                            </p:submenu>
+
                             <p:submenu label="Fabricacion">
                                 <p:menuitem value="Gestionar Produccion" ajax="false" outcome="Produccion" 
-                                            icon="#{FacesContext.getCurrentInstance().getExternalContext()}resources/iconos/planilla.png"/>
+                                            icon="ui-icon-refresh"/>
                             </p:submenu>
-                            <p:submenu label="Produccion">
-                                <p:menuitem value="Gestionar" ajax="false" icon="ui-icon-calculator"/>
-                            </p:submenu>
+
                             <p:submenu label="Ventas">
                                 <p:menuitem value="Generar Venta" ajax="false" icon="ui-icon-calculator"/>
                             </p:submenu>
                             <p:submenu label="Empleados">
                                 <p:menuitem value="Empleado" outcome="empleado" icon="ui-icon-calculator"/>
+                            </p:submenu>
+                            <p:submenu label="Informes" icon="ui-icon-folder-open">
+                                <p:menuitem value="Central de Informes" 
+                                            icon="ui-icon-print" url="#" />
                             </p:submenu>
                         </p:menu>
                     </h:form>

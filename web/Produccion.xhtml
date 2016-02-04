@@ -35,12 +35,21 @@
                            closable="false" resizable="false" showHeader="false">
                     <p:graphicImage name="icon/ajax-loader.gif"/>
                  </p:dialog> -->
-                
+
                 <h:form id="frmfabrica">
-                    
-                    
+                    <p:panel header="DATOS DE LA PRODUCCION">
+                        <h:panelGrid columns="2">
+                            <h:outputText value="ID. Produccion" />
+                            <p:inputText value="#{fabricacionBean.produccion.idproduccion}" />
+                            
+                            <p:outputLabel for="jdff" value="Fecha de Fabricacion (F.F)" />
+                            <p:calendar showOn="button"  id="jdff" value="#{fabricacionBean.produccion.fechaemision}"/>
+                            
+                        </h:panelGrid>
+                    </p:panel>
+
                 </h:form>
-                
+
             </ui:define>
 
         </ui:composition>
