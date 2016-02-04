@@ -37,16 +37,110 @@
                  </p:dialog> -->
 
                 <h:form id="frmfabrica">
-                    <p:panel header="DATOS DE LA PRODUCCION">
+                    <p:fieldset legend="DATOS DE LA PRODUCCION">
                         <h:panelGrid columns="2">
                             <h:outputText value="ID. Produccion" />
-                            <p:inputText value="#{fabricacionBean.produccion.idproduccion}" />
-                            
+                            <p:inputText value="#{fabricacionBean.produccion.idproduccion}" size="5" style="text-align: right" />
+
                             <p:outputLabel for="jdff" value="Fecha de Fabricacion (F.F)" />
-                            <p:calendar showOn="button"  id="jdff" value="#{fabricacionBean.produccion.fechaemision}"/>
-                            
+                            <p:calendar showOn="button"  navigator="true"  id="jdff" value="#{fabricacionBean.produccion.fechaemision}"/>
+
+                            <h:outputText value="$ Costo Total" />
+                            <p:inputText value="#{fabricacionBean.produccion.costototal}"  size="15" style="text-align: right">
+                                <f:convertNumber type="currency" currencySymbol="$ " maxFractionDigits="0" />
+                            </p:inputText>
+
+                            <h:outputText value="Numero de Lote" />
+                            <p:inputText value="#{fabricacionBean.produccion.numerolote}"/>
+
+                            <h:outputText value="Producto Fabricado" />
+                            <p:selectOneMenu id="comboprodfinal" value="#{fabricacionBean.produccion.productos.idproductos}" required="true" 
+                                             requiredMessage="Selecciona un Producto por favor. Gracias!" filter="true"
+                                             filterMatchMode="contains" 
+                                             converter="omnifaces.SelectItemsConverter" style="width: 280px">
+                                <f:selectItem itemLabel="Seleccione"  itemValue="#{productofinal.descripcion}"/>
+                                <f:selectItems value="#{productoBean.listProductos}"
+                                               var="productofinal"
+                                               itemValue="#{productofinal.idproductos}"
+                                               itemLabel="#{productofinal.descripcion}"/>
+                            </p:selectOneMenu>
+
+                            <h:outputText value="Cantidad Fabricada" />
+                            <p:inputText value="#{fabricacionBean.produccion.cantidadproducida}" size="10"  style="text-align: right" >
+                                <f:convertNumber type="currency" currencySymbol="" maxFractionDigits="0" />
+                            </p:inputText>
                         </h:panelGrid>
-                    </p:panel>
+                        <h:panelGrid columns="2">
+                            <p:fieldset legend="Agregar Empleados a la Produccion">
+                                <h:panelGrid columns="3">
+                                    <h:outputText value="Seleccione Empleado" />
+                                    <p:selectOneMenu id="comboempleado" value="#{fabricacionBean.produccion.operadorproduccion.empleados.idempleados}" required="true" 
+                                                     requiredMessage="Selecciona un Producto por favor. Gracias!" filter="true"
+                                                     filterMatchMode="contains" 
+                                                     converter="omnifaces.SelectItemsConverter" style="width: 280px">
+                                        <f:selectItem itemLabel="Seleccione"  itemValue="#{Empproduccion.apellido1} #{Empproduccion.nombre1}"/>
+                                        <f:selectItems value="#{empleadoBean.listEmpleados}"
+                                                       var="Empproduccion"
+                                                       itemValue="#{Empproduccion.idempleados}"
+                                                       itemLabel="#{Empproduccion.apellido1} #{Empproduccion.nombre1}"/>
+                                    </p:selectOneMenu>
+                                    <p:commandButton value="Agregar" icon="ui-icon-plus"/>
+                                </h:panelGrid>
+
+                                <p:dataTable id="tbemproduccion" var="empleadoF">
+                                    <p:column headerText="Empleado">
+
+                                    </p:column>
+
+                                </p:dataTable>
+
+                            </p:fieldset>    
+
+                            <p:fieldset legend="Agregar Insumos a la Produccion">
+                                <h:panelGrid columns="2">
+                                    <h:outputText value="Seleccionar Insumo" />
+                                    <p:selectOneMenu id="comboinsumo" value="#{fabricacionBean.produccion.detalleproduccion.productos.idproductos}" required="true" 
+                                                     requiredMessage="Selecciona un Insumo por favor. Gracias!" filter="true"
+                                                     filterMatchMode="contains" 
+                                                     converter="omnifaces.SelectItemsConverter" style="width: 280px">
+                                        <f:selectItem itemLabel="Seleccione"  itemValue="#{insumo.descripcion}"/>
+                                        <f:selectItems value="#{productoBean.listProductos}"
+                                                       var="insumo"
+                                                       itemValue="#{insumo.idproductos}"
+                                                       itemLabel="#{insumo.descripcion}"/>
+                                    </p:selectOneMenu>
+                                    <h:outputText value="Cantidad" />
+                                    <p:inputText value="#{fabricacionBean.produccion.detalleproduccion.cantidad}" size="10"  style="text-align: right" >
+                                        <f:convertNumber type="currency" currencySymbol="" maxFractionDigits="0" />
+                                    </p:inputText>
+                                   
+                                    <h:outputText value="Cantidad Fabricada" />
+                                    <p:inputText value="#{fabricacionBean.produccion.detalleproduccion.costo}" size="10"  style="text-align: right" >
+                                        <f:convertNumber type="currency" currencySymbol="" maxFractionDigits="0" />
+                                    </p:inputText>
+                                   
+                                    <p:commandButton value="Agregar" icon="ui-icon-plus"/>
+                                </h:panelGrid>
+
+                                <p:dataTable id="tbinsumoproduccion" var="insumoFabrica">
+                                    <p:column headerText="Insumo">
+
+                                    </p:column>
+                                    <p:column headerText="Cantidad">
+
+                                    </p:column>
+                                    <p:column headerText="Costo Unidad">
+
+                                    </p:column>
+                                    <p:column headerText="Costo Total">
+
+                                    </p:column>
+
+                                </p:dataTable>
+
+                            </p:fieldset> 
+                        </h:panelGrid>
+                    </p:fieldset>
 
                 </h:form>
 
