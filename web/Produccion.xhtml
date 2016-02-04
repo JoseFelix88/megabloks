@@ -113,12 +113,16 @@
                                     <p:inputText value="#{fabricacionBean.produccion.detalleproduccion.cantidad}" size="10"  style="text-align: right" >
                                         <f:convertNumber type="currency" currencySymbol="" maxFractionDigits="0" />
                                     </p:inputText>
-                                   
-                                    <h:outputText value="Cantidad Fabricada" />
+
+                                    <h:outputText value="Costo Unitario" />
                                     <p:inputText value="#{fabricacionBean.produccion.detalleproduccion.costo}" size="10"  style="text-align: right" >
-                                        <f:convertNumber type="currency" currencySymbol="" maxFractionDigits="0" />
+                                        <f:convertNumber type="currency" currencySymbol="$ " maxFractionDigits="0" />
                                     </p:inputText>
-                                   
+
+                                    <h:outputText value="Costo Total" />
+                                    <p:inputText value="#{fabricacionBean.produccion.detalleproduccion.costo}" size="10"  style="text-align: right" >
+                                        <f:convertNumber type="currency" currencySymbol="$ " maxFractionDigits="0" />
+                                    </p:inputText>
                                     <p:commandButton value="Agregar" icon="ui-icon-plus"/>
                                 </h:panelGrid>
 
