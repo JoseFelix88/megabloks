@@ -112,7 +112,7 @@ public class ProductoDAO extends database implements CRUD<Producto> {
             ps = getConnection().prepareStatement(sql);
             ps.setInt(1, Integer.parseInt(key.toString()));
             ps.setString(2, key.toString());
-            System.out.println(ps);
+           
             rs = ps.executeQuery();
             if (rs.next()) {
                 producto = new Producto();

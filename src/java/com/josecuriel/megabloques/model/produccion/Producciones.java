@@ -35,9 +35,9 @@ public class Producciones implements Serializable {
    
     private int estado;
     
-    private Producto productos;
+    private Producto productos = new Producto();
     
-    private Detalleproduccion detalleproduccion;
+    private Detalleproduccion detalleproduccion = new Detalleproduccion();
     
     private Operadorproduccion operadorproduccion;
     

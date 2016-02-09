@@ -55,17 +55,27 @@
                                 <p:inputText value="#{fabricacionBean.produccion.numerolote}"/>
 
                                 <h:outputText value="Producto Fabricado" />
-                                <p:selectOneMenu id="comboprodfinal" value="#{fabricacionBean.produccion.productos.idproductos}" required="true" 
+                                <p:selectOneMenu id="comboprodfinal" value="#{fabricacionBean.produccion.productos}" required="true" 
                                                  requiredMessage="Selecciona un Producto por favor. Gracias!" filter="true"
-                                                 filterMatchMode="contains" 
-                                                 converter="omnifaces.SelectItemsConverter" style="width: 280px">
+                                                 filterMatchMode="contains"  var="finalprod"
+                                                 converter="productoConverter" style="width: 280px; font-size: 11px">
                                     <f:selectItem itemLabel="Seleccione"  itemValue="#{productofinal.idproductos}"/>
                                     <f:selectItems value="#{productoBean.listProductos}"
                                                    var="productofinal"
-                                                   itemValue="#{productofinal.idproductos}"
+                                                   itemValue="#{productofinal}"
                                                    itemLabel="#{productofinal.descripcion}"/>
-                                    
-                                    
+
+                                    <p:column style="width:10%">
+                                        <h:graphicImage  name="/imgproductos/#{finalprod.imagen}"
+                                                         height="50" width="50" alt="" />    
+                                    </p:column>
+
+                                    <p:column>
+                                        <h:outputText value="#{finalprod.descripcion}"/>
+                                    </p:column>
+                                    <p:ajax update="pnlimgprod" listener="#{fabricacionBean.findBYproducto(event,
+                                                                            fabricacionBean.produccion.productos)}"  />
+
                                 </p:selectOneMenu>
 
                                 <h:outputText value="Cantidad Fabricada" />
@@ -74,7 +84,7 @@
                                 </p:inputText>
                             </h:panelGrid>
 
-                            <p:panel header="Producto en Fabricacion" id="pnlimgprod">
+                            <p:panel style="align-items: center" header="Producto en Fabricacion" id="pnlimgprod">
                                 <p:lightBox iframe="false" height="60" width="60"  id="lighbox2">  
                                     <h:outputLink title="#{fabricacionBean.produccion.productos.descripcion}"
                                                   value="#{FacesContext.getCurrentInstance().getExternalContext()}resources/imgproductos/#{fabricacionBean.produccion.productos.imagen}">
@@ -92,6 +102,7 @@
                                                      filterMatchMode="contains"  var="emp"
                                                      converter="omnifaces.SelectItemsConverter" style="width: 280px">
 
+                                        <f:selectItem itemLabel="Selecciona" itemValue="#{Empproduccion.idempleados}"/>
                                         <f:selectItems value="#{empleadoBean.listEmpleados}"
                                                        var="Empproduccion"
                                                        itemValue="#{Empproduccion}"
@@ -99,7 +110,7 @@
 
                                         <p:column style="width:10%">
                                             <h:graphicImage  name="/empleados/#{emp.idempleados}/#{emp.foto}" 
-                                                             alt="Sin image"  width="40" height="50" />    
+                                                             alt=""  width="40" height="50" />    
                                         </p:column>
 
                                         <p:column>
