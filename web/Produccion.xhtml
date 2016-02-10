@@ -55,26 +55,19 @@
                                 <p:inputText value="#{fabricacionBean.produccion.numerolote}"/>
 
                                 <h:outputText value="Producto Fabricado" />
-                                <p:selectOneMenu id="comboprodfinal" value="#{fabricacionBean.produccion.productos}" required="true" 
+                                <p:selectOneMenu id="comboprodfinal" value="#{fabricacionBean.produccion.productos.idproductos}" required="true" 
                                                  requiredMessage="Selecciona un Producto por favor. Gracias!" filter="true"
-                                                 filterMatchMode="contains"  var="finalprod"
-                                                 converter="productoConverter" style="width: 280px; font-size: 11px">
-                                    <f:selectItem itemLabel="Seleccione"  itemValue="#{productofinal.idproductos}"/>
+                                                 filterMatchMode="contains" converter="omnifaces.SelectItemsConverter" 
+                                                 style="width: 280px; font-size: 11px">
+                                    <f:selectItem itemLabel="Seleccione"  itemValue="#{productofinal.descripcion}"/>
                                     <f:selectItems value="#{productoBean.listProductos}"
                                                    var="productofinal"
-                                                   itemValue="#{productofinal}"
+                                                   itemValue="#{productofinal.idproductos}"
                                                    itemLabel="#{productofinal.descripcion}"/>
 
-                                    <p:column style="width:10%">
-                                        <h:graphicImage  name="/imgproductos/#{finalprod.imagen}"
-                                                         height="50" width="50" alt="" />    
-                                    </p:column>
-
-                                    <p:column>
-                                        <h:outputText value="#{finalprod.descripcion}"/>
-                                    </p:column>
+                                    
                                     <p:ajax update="pnlimgprod" listener="#{fabricacionBean.findBYproducto(event,
-                                                                            fabricacionBean.produccion.productos)}"  />
+                                                                            fabricacionBean.produccion.productos.idproductos)}"  />
 
                                 </p:selectOneMenu>
 
@@ -84,7 +77,7 @@
                                 </p:inputText>
                             </h:panelGrid>
 
-                            <p:panel style="align-items: center" header="Producto en Fabricacion" id="pnlimgprod">
+                            <p:panel style="text-align:  center;margin-right: 20px; margin-bottom:  80px" header="Producto en Fabricacion" id="pnlimgprod">
                                 <p:lightBox iframe="false" height="60" width="60"  id="lighbox2">  
                                     <h:outputLink title="#{fabricacionBean.produccion.productos.descripcion}"
                                                   value="#{FacesContext.getCurrentInstance().getExternalContext()}resources/imgproductos/#{fabricacionBean.produccion.productos.imagen}">

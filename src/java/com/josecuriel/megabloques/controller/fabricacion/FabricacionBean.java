@@ -38,9 +38,9 @@ public class FabricacionBean implements Serializable{
         
     }
     
-    public void findBYproducto(ActionEvent event, Producto o){
+    public void findBYproducto(ActionEvent event, Object o){
 
-        System.out.println("opcion seleccionada "+o.getDescripcion());
+        System.out.println("opcion seleccionada "+o);
         produccion.setProductos(factory.producto().read(o));
     }
 }
