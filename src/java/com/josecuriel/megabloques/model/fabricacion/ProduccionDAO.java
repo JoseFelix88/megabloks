@@ -1,4 +1,4 @@
-package com.josecuriel.megabloques.model.produccion;
+package com.josecuriel.megabloques.model.fabricacion;
 
 import com.josecuriel.megabloques.model.producto.ProductoDAO;
 import com.josecuriel.megabloques.model.util.Utilidades;
@@ -20,12 +20,12 @@ public class ProduccionDAO extends database implements CRUD<Producciones> {
     public boolean create(Producciones c) {
 
         PreparedStatement ps;
-        String sql = "INSERT INTO PRODUCCIONES (FECHAEMISION, COSTOTOTAL, HORAINICIO, "
+        String sql = "INSERT INTO PRODUCCIONES (FECHAFABRICACION, COSTOTOTAL, HORAINICIO, "
                 + " PRODUCTOFINAL,NUMEROLOTE, CANTIDADPRODUCCIDA, ESTADO) VALUES (?,?,CURRENT_TIME(),?,?,?,1)";
         try {
 
             ps = getConnection().prepareStatement(sql);
-            ps.setDate(1, (Date) util.formatearFecha(util.formatearFecha(c.getFechaemision())));
+            ps.setDate(1, (Date) util.formatearFecha(util.formatearFecha(c.getFechafabricacion())));
             ps.setLong(2, c.getCostototal());
             ps.setInt(3, productoDAO.read(c.getProductos().getIdproductos()).getIdproductos());
             ps.setString(4, c.getNumerolote());
@@ -54,7 +54,7 @@ public class ProduccionDAO extends database implements CRUD<Producciones> {
         try {
 
             ps = getConnection().prepareStatement(sql);
-            ps.setDate(1, (Date) util.formatearFecha(util.formatearFecha(c.getFechaemision())));
+            ps.setDate(1, (Date) util.formatearFecha(util.formatearFecha(c.getFechafabricacion())));
             ps.setLong(2, c.getCostototal());
             ps.setInt(3, productoDAO.read(c.getProductos().getIdproductos()).getIdproductos());
             ps.setString(4, c.getNumerolote());
@@ -99,7 +99,7 @@ public class ProduccionDAO extends database implements CRUD<Producciones> {
                 if (rs.next()) {
                     p = new Producciones();
                     p.setIdproduccion(rs.getInt("idproducciones"));
-                    p.setFechaemision(rs.getDate("fechaemision"));
+                    p.setFechafabricacion(rs.getDate("fechaemision"));
                     p.setCostototal(rs.getLong("costototal"));
                     p.setHorainicio(rs.getTime("horainicio"));
                     p.setHorafinal(rs.getTime("horafinal"));
@@ -145,7 +145,7 @@ public class ProduccionDAO extends database implements CRUD<Producciones> {
             while (rs.next()) {
                 p = new Producciones();
                 p.setIdproduccion(rs.getInt("idproducciones"));
-                p.setFechaemision(rs.getDate("fechaemision"));
+                p.setFechafabricacion(rs.getDate("fechaemision"));
                 p.setCostototal(rs.getLong("costototal"));
                 p.setHorainicio(rs.getTime("horainicio"));
                 p.setHorafinal(rs.getTime("horafinal"));
@@ -166,7 +166,7 @@ public class ProduccionDAO extends database implements CRUD<Producciones> {
     public boolean ingresarInsumos(Producciones p){
         
         String values = ""+p.getIdproduccion()+","+p.getDetalleproduccion().getProductos().getIdproductos()+","
-                + ""+p.getDetalleproduccion().getCantidad()+","+p.getDetalleproduccion().getCosto();
+                + ""+p.getDetalleproduccion().getCantidad()+","+p.getDetalleproduccion().getProductos().getCosto();
         
         return insert("detalleproduccion", "produccion, insumo, cantidad, costo", values);
     }
@@ -174,7 +174,6 @@ public class ProduccionDAO extends database implements CRUD<Producciones> {
     public boolean ingresarOperadorProduccion(Producciones p){
         
         String values = ""+p.getIdproduccion()+","+p.getOperadorproduccion().getEmpleados().getIdempleados();
-        
         return insert("operadorproduccion", "empleado, produccion", values);
     }
 

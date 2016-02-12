@@ -44,15 +44,16 @@
                                 <p:inputText value="#{fabricacionBean.produccion.idproduccion}" size="5" style="text-align: right" />
 
                                 <p:outputLabel for="jdff" value="Fecha de Fabricacion (F.F)" />
-                                <p:calendar showOn="button"  navigator="true"  id="jdff" value="#{fabricacionBean.produccion.fechaemision}"/>
+                                <p:calendar showOn="button"  navigator="true"  id="jdff" value="#{fabricacionBean.fechafabrica}"
+                                           pattern="dd-MM-yyyy" mask="true" />
 
                                 <h:outputText value="$ Costo Total" />
-                                <p:inputText value="#{fabricacionBean.produccion.costototal}"  size="15" style="text-align: right">
+                                <p:inputText value="#{fabricacionBean.produccion.costototal}"  size="10" style="text-align: right">
                                     <f:convertNumber type="currency" currencySymbol="$ " maxFractionDigits="0" />
                                 </p:inputText>
 
                                 <h:outputText value="Numero de Lote" />
-                                <p:inputText value="#{fabricacionBean.produccion.numerolote}"/>
+                                <p:inputText value="#{fabricacionBean.numero_lote}"/>
 
                                 <h:outputText value="Producto Fabricado" />
                                 <p:selectOneMenu id="comboprodfinal" value="#{fabricacionBean.produccion.productos.idproductos}" required="true" 
@@ -60,7 +61,7 @@
                                                  filterMatchMode="contains" converter="omnifaces.SelectItemsConverter" 
                                                  style="width: 380px; font-size: 11px">
                                     <f:selectItem itemLabel="Seleccione"  itemValue="#{productofinal.descripcion}"/>
-                                    <f:selectItems value="#{productoBean.listProductos}"
+                                    <f:selectItems value="#{productoBean.listFabricados}"
                                                    var="productofinal"
                                                    itemValue="#{productofinal.idproductos}"
                                                    itemLabel="#{productofinal.descripcion}"/>
@@ -136,31 +137,36 @@
                                                      requiredMessage="Selecciona un Insumo por favor. Gracias!" filter="true"
                                                      filterMatchMode="contains" 
                                                      converter="omnifaces.SelectItemsConverter" style="width: 280px">
-                                        <f:selectItem itemLabel="Seleccione"  itemValue="#{insumo.descripcion}"/>
-                                        <f:selectItems value="#{productoBean.listProductos}"
+                                        <f:selectItem itemLabel="Seleccione"  itemValue="#{insumo.idproductos}"/>
+                                        <f:selectItems value="#{productoBean.listInsumos}"
                                                        var="insumo"
                                                        itemValue="#{insumo.idproductos}"
                                                        itemLabel="#{insumo.descripcion}"/>
+                                        
+                                        <p:ajax update="txtstockactual,txtvrund"  
+                                                listener="#{fabricacionBean.findBYproducto(event, fabricacionBean.produccion.detalleproduccion.productos.idproductos)}"  />
+                                        
                                     </p:selectOneMenu>
                                     
                                     <h:outputText value="Stock Actual" />
-                                    <p:inputText value="#{fabricacionBean.produccion.productos.stockActual}" size="5"  disabled="true" style="text-align: right" >
+                                    <p:inputText id="txtstockactual" value="#{fabricacionBean.produccion.productos.stockActual}" size="5"  disabled="true" style="text-align: right" >
                                         <f:convertNumber type="currency" currencySymbol="" maxFractionDigits="0" />
                                     </p:inputText>
                                 </h:panelGrid>
                                 <h:panelGrid columns="6">
                                     <h:outputText value="Cantidad" />
                                     <p:inputText value="#{fabricacionBean.produccion.detalleproduccion.cantidad}" size="5"  style="text-align: right" >
-                                        <f:convertNumber type="currency" currencySymbol="" maxFractionDigits="0" />
+                                        <p:ajax event="keyup" update="txtcostototal" listener="#{fabricacionBean.TotalCosto(event,
+                                                                                                 fabricacionBean.produccion.detalleproduccion.cantidad)}"/>
                                     </p:inputText>
 
                                     <h:outputText value="Costo Unitario" />
-                                    <p:inputText value="#{fabricacionBean.produccion.detalleproduccion.costo}" size="5"  style="text-align: right" >
+                                    <p:inputText id="txtvrund" value="#{fabricacionBean.produccion.productos.costo}" size="5"  style="text-align: right" >
                                         <f:convertNumber type="currency" currencySymbol="$ " maxFractionDigits="0" />
                                     </p:inputText>
 
                                     <h:outputText value="Costo Total" />
-                                    <p:inputText value="#{fabricacionBean.produccion.detalleproduccion.costo}" size="5"  style="text-align: right" >
+                                    <p:inputText id="txtcostototal" value="#{fabricacionBean.produccion.detalleproduccion.costo}" size="15"  style="text-align: right" >
                                         <f:convertNumber type="currency" currencySymbol="$ " maxFractionDigits="0" />
                                     </p:inputText>
                                     <p:commandButton value="Agregar" icon="ui-icon-plus"/>

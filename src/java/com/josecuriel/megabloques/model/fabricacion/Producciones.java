@@ -1,10 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 
-package com.josecuriel.megabloques.model.produccion;
+
+package com.josecuriel.megabloques.model.fabricacion;
 
 import com.josecuriel.megabloques.model.producto.Producto;
 import java.io.Serializable;
@@ -21,7 +17,7 @@ public class Producciones implements Serializable {
     
     private int idproduccion;
     
-    private Date fechaemision;
+    private Date fechafabricacion;
      
     private long costototal;
     
@@ -64,12 +60,12 @@ public class Producciones implements Serializable {
         this.produccionesPK = produccionesPK;
     }
 
-    public Date getFechaemision() {
-        return fechaemision;
+    public Date getFechafabricacion() {
+        return fechafabricacion;
     }
 
-    public void setFechaemision(Date fechaemision) {
-        this.fechaemision = fechaemision;
+    public void setFechafabricacion(Date fechafabricacion) {
+        this.fechafabricacion = fechafabricacion;
     }
 
     public long getCostototal() {

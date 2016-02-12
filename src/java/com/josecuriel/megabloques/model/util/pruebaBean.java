@@ -20,21 +20,21 @@ public class pruebaBean {
         System.out.println(sSistemaOperativo);
         /*ServletContext servletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
         realPath = (String) servletContext.getRealPath("/"); // Sustituye "/" por el directorio ej: "/upload"
-        System.out.println(realPath);*/
+        System.out.println(realPath);
         
          EmpleadoDAO emdao = new EmpleadoDAO();
         System.out.println("idempleado: "+emdao.read(1102819530).getTipodocumento());
         List<Empleados> lis = emdao.readAll();
         for (Empleados li : lis) {
             System.out.println("empleado: "+li.getTipodocumento());
-        }
-       /* ProductoDAO dAO = new ProductoDAO();
+        }*/
+        ProductoDAO dAO = new ProductoDAO();
 
-        List<Producto>l = dAO.readAll();
+        List<Producto>l = dAO.ListarProductosFabricados();
         for (Producto l1 : l) {
             System.out.println(l1.getDescripcion()+" - "+l1.getIdproductos());
             
-        }*/
+        }
 
  /* List<Categoria> rs = aO.readAll();
         for (Categoria r : rs) {

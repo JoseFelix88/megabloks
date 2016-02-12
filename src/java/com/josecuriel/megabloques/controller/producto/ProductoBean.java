@@ -35,6 +35,8 @@ public class ProductoBean implements Serializable {
     private Producto producto;
     private List<Producto> listProductos;
     private List<Producto> filtrolistProductos;
+    private List<Producto> listInsumos;
+    private List<Producto> listFabricados;
 
     private UploadedFile imgproducto;
 
@@ -52,6 +54,10 @@ public class ProductoBean implements Serializable {
     private void cargarListaproducto() {
         listProductos = new ArrayList<>();
         filtrolistProductos = new ArrayList<>();
+        listInsumos = new ArrayList<>();
+        listFabricados = new ArrayList<>();
+        listInsumos = productoDAO.ListarInsumos();
+        listFabricados = productoDAO.ListarProductosFabricados();
         listProductos = productoDAO.readAll();
         filtrolistProductos = listProductos;
 
@@ -224,5 +230,21 @@ public class ProductoBean implements Serializable {
 
     public void setImgproducto(UploadedFile imgproducto) {
         this.imgproducto = imgproducto;
+    }
+
+    public List<Producto> getListInsumos() {
+        return listInsumos;
+    }
+
+    public void setListInsumos(List<Producto> listInsumos) {
+        this.listInsumos = listInsumos;
+    }
+
+    public List<Producto> getListFabricados() {
+        return listFabricados;
+    }
+
+    public void setListFabricados(List<Producto> listFabricados) {
+        this.listFabricados = listFabricados;
     }
 }

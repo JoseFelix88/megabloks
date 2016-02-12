@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package com.josecuriel.megabloques.model.produccion;
+package com.josecuriel.megabloques.model.fabricacion;
 
 import java.io.Serializable;
  

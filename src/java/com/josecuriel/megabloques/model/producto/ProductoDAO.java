@@ -205,5 +205,100 @@ public class ProductoDAO extends database implements CRUD<Producto> {
     public void agregarImagenProducto(String codigobarras, String archivoimg) {
         update("productos", "imagen = '" + archivoimg + "'", "codigobarras = " + codigobarras + "");
     }
+    
+    public List<Producto> ListarInsumos() {
+        List<Producto> list = new ArrayList<>();
+        PreparedStatement ps;
+        ResultSet rs;
+        String sql = "SELECT productos.idproductos, productos.codigobarras,\n"
+                + "productos.descripcion,productos.stock_actual,\n"
+                + "productos.stock_minimo,productos.stock_aviso,\n"
+                + "productos.costo,productos.precio_venta,\n"
+                + "productos.utilidad,productos.estado,\n"
+                + "productos.fechacreacion, productos.categoria,\n"
+                + "productos.usuariosystem,alto,ancho,espesor,peso,ifnull(imagen,'nd') as imagen\n"
+                + "FROM productos where estado = 1 and (categoria = 1 or categoria = 3)";
 
+        try {
+            ps = getConnection().prepareStatement(sql);
+            rs = ps.executeQuery();
+            Producto producto;
+            while (rs.next()) {
+                producto = new Producto();
+                producto.setIdproductos(rs.getInt("idproductos"));
+                producto.setCodigobarras(rs.getString("codigobarras"));
+                producto.setDescripcion(rs.getString("descripcion"));
+                producto.setStockActual(rs.getFloat("stock_actual"));
+                producto.setStockAviso(rs.getFloat("stock_aviso"));
+                producto.setStockMinimo(rs.getFloat("stock_minimo"));
+                producto.setCosto(rs.getFloat("costo"));
+                producto.setPrecioVenta(rs.getInt("precio_venta"));
+                producto.setUtilidad(rs.getInt("utilidad"));
+                producto.setEstado(rs.getInt("estado"));
+                producto.setFechacreacion(rs.getDate("fechacreacion"));
+                producto.setCategoria(categoria.read(rs.getInt("categoria")));
+                producto.setEmpleados(empleado.read(rs.getInt("usuarioSystem")));
+                producto.setAlto(rs.getFloat("alto"));
+                producto.setAncho(rs.getFloat("ancho"));
+                producto.setEspesor(rs.getFloat("espesor"));
+                producto.setPeso(rs.getFloat("peso"));
+                producto.setImagen(rs.getString("imagen"));
+
+                list.add(producto);
+            }
+        } catch (Exception e) {
+
+            System.out.println("error al momento de cargar la lista de Insumos: " + e);
+        }
+
+        return list;
+    }
+
+     public List<Producto> ListarProductosFabricados() {
+        List<Producto> list = new ArrayList<>();
+        PreparedStatement ps;
+        ResultSet rs;
+        String sql = "SELECT productos.idproductos, productos.codigobarras,\n"
+                + "productos.descripcion,productos.stock_actual,\n"
+                + "productos.stock_minimo,productos.stock_aviso,\n"
+                + "productos.costo,productos.precio_venta,\n"
+                + "productos.utilidad,productos.estado,\n"
+                + "productos.fechacreacion, productos.categoria,\n"
+                + "productos.usuariosystem,alto,ancho,espesor,peso,ifnull(imagen,'nd') as imagen\n"
+                + "FROM productos where estado = 1 and categoria = 2";
+
+        try {
+            ps = getConnection().prepareStatement(sql);
+            rs = ps.executeQuery();
+            Producto producto;
+            while (rs.next()) {
+                producto = new Producto();
+                producto.setIdproductos(rs.getInt("idproductos"));
+                producto.setCodigobarras(rs.getString("codigobarras"));
+                producto.setDescripcion(rs.getString("descripcion"));
+                producto.setStockActual(rs.getFloat("stock_actual"));
+                producto.setStockAviso(rs.getFloat("stock_aviso"));
+                producto.setStockMinimo(rs.getFloat("stock_minimo"));
+                producto.setCosto(rs.getFloat("costo"));
+                producto.setPrecioVenta(rs.getInt("precio_venta"));
+                producto.setUtilidad(rs.getInt("utilidad"));
+                producto.setEstado(rs.getInt("estado"));
+                producto.setFechacreacion(rs.getDate("fechacreacion"));
+                producto.setCategoria(categoria.read(rs.getInt("categoria")));
+                producto.setEmpleados(empleado.read(rs.getInt("usuarioSystem")));
+                producto.setAlto(rs.getFloat("alto"));
+                producto.setAncho(rs.getFloat("ancho"));
+                producto.setEspesor(rs.getFloat("espesor"));
+                producto.setPeso(rs.getFloat("peso"));
+                producto.setImagen(rs.getString("imagen"));
+
+                list.add(producto);
+            }
+        } catch (Exception e) {
+
+            System.out.println("error al momento de cargar la lista de Insumos: " + e);
+        }
+
+        return list;
+    }
 }

@@ -1,7 +1,7 @@
 
 package com.josecuriel.megabloques.model.empleado;
 
-import com.josecuriel.megabloques.model.produccion.Operadorproduccion;
+import com.josecuriel.megabloques.model.fabricacion.Operadorproduccion;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;

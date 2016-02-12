@@ -1,6 +1,6 @@
 
 
-package com.josecuriel.megabloques.model.produccion;
+package com.josecuriel.megabloques.model.fabricacion;
 
 import com.josecuriel.megabloques.model.producto.Producto;
 import java.io.Serializable;
@@ -13,9 +13,9 @@ public class Detalleproduccion implements Serializable {
   
     private Float cantidad;
    
-    private Integer costo;
+    private int costo;
     
-    private Producto productos;
+    private Producto productos = new Producto();
     
     private Producciones producciones;
 
@@ -46,11 +46,11 @@ public class Detalleproduccion implements Serializable {
         this.cantidad = cantidad;
     }
 
-    public Integer getCosto() {
+    public int getCosto() {
         return costo;
     }
 
-    public void setCosto(Integer costo) {
+    public void setCosto(int costo) {
         this.costo = costo;
     }
 

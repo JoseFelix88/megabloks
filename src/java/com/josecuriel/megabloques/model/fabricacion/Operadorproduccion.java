@@ -1,7 +1,7 @@
 
 
 
-package com.josecuriel.megabloques.model.produccion;
+package com.josecuriel.megabloques.model.fabricacion;
 
 import com.josecuriel.megabloques.model.empleado.Empleados;
 import java.io.Serializable;
